@@ -44,7 +44,7 @@ const Today = ({ data, location }) => {
 							<span className="px-1">{round(data.windSpeed, 1)}m/s</span>
 						</div>
 						<div className="flex items-center text-gray-700 pl-1"><i className="wi wi-humidity" />
-							<span className="px-1">{data.humidity * 100}%</span>
+							<span className="px-1">{round(data.humidity * 100)}%</span>
 						</div>
 					</div>
 				</div>

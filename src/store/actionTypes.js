@@ -1,0 +1,1 @@
+export const SAVE_FORECAST_DATA = "SAVE_FORECAST_DATA";

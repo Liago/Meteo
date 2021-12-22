@@ -69,7 +69,8 @@ const Page = () => {
 
 		return (
 			forecast.daily.data.map((day, i) => {
-				return <Daily key={i} data={day} />;
+				if (i >= 1)
+					return <Daily key={i} data={day} />;
 			})
 		)
 

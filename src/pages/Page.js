@@ -20,7 +20,7 @@ const Page = () => {
 	const [currentDay, setCurrentDay] = useState(null);
 	const [daily, setDaily] = useState(null);
 
-	// console.log('forecast :>> ', forecast);
+	console.log('forecast :>> ', forecast);
 
 	useEffect(() => {
 		navigator.geolocation.getCurrentPosition(
@@ -73,7 +73,6 @@ const Page = () => {
 					return <Daily key={i} data={day} />;
 			})
 		)
-
 	}
 
 	return (
@@ -92,8 +91,10 @@ const Page = () => {
 						<IonTitle size="large">{name}</IonTitle>
 					</IonToolbar>
 				</IonHeader>
-				{renderToday()}
-				{renderWeekdays()}
+				<div className="container mx-auto px-4">
+					{renderToday()}
+					{renderWeekdays()}
+				</div>
 			</Layout>
 		</IonPage>
 	);

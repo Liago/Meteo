@@ -1,25 +1,23 @@
-import { getDataFormatted } from "../../utils/utils";
+import { getDataFormatted, getWeatherIcon } from "../../utils/utils";
 import { round } from 'lodash'
+import { LocationMarkerIcon } from "@heroicons/react/outline";
 
 const Today = ({ data, location }) => {
-	console.log('Today :>> ', data);
-	console.log('Location :>> ', location);
+	// console.log('Today :>> ', data);
+	// console.log('Location :>> ', location);
 	return (
 		<div>
 			<div className="py-3"></div>
-			<div className="bg-white shadow-md rounded-lg w-80 mx-auto pt-3">
+			<div className="bg-white shadow-md rounded-lg w-full pt-3">
 				<div className="px-4 py-5 sm:px-6">
 					<div className="flex flex-auto">
-						<svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-							<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-							<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-						</svg>
+						<LocationMarkerIcon className="h-5 w-5" />
 						<h3 className="text-lg leading-6 font-medium text-gray-900 pl-3">{location.city}</h3>
 					</div>
 					<h3 className="text-right text-sm font-light text-gray-900 pl-3">{getDataFormatted(data.time, 'dddd DD MMMM YYYY')}</h3>
 					<div className="flex justify-between pt-8">
 						<div className="text-6xl text-grey-600 text-center">
-							<i className={`wi wi-day-${data.icon}`} />
+							<i className={`wi wi-${getWeatherIcon(data.icon)}`} />
 						</div>
 						<div className="flex justify-between">
 							<p className="text-6xl font-medium text-gray-700">{round(data.temperatureHigh)}º</p>
@@ -28,8 +26,8 @@ const Today = ({ data, location }) => {
 					</div>
 					<div className="flex justify-between py-3">
 						<div className="flex justify-end font-normal text-xs">
-							<div className="flex items-center text-gray-700"><i className="wi wi-sunrise text-red-500" /> {getDataFormatted(data.sunriseTime, 'HH:mm')}</div>
-							<div className="flex items-center text-gray-700 px-1"><i className="wi wi-sunset text-blue-500" /> {getDataFormatted(data.sunsetTime, 'HH:mm')}</div>
+							<div className="flex items-center text-gray-700"><i className="wi wi-sunrise text-gray-500" /> {getDataFormatted(data.sunriseTime, 'HH:mm')}</div>
+							<div className="flex items-center text-gray-700 px-1"><i className="wi wi-sunset text-gray-500" /> {getDataFormatted(data.sunsetTime, 'HH:mm')}</div>
 						</div>
 						<div className="text-xs text-right font-light text-gray-900">{data.summary}</div>
 					</div>

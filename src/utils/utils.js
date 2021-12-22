@@ -6,7 +6,7 @@ export const getDataFormatted = (unixDate, dateFormat) => {
 }
 
 export const getWeatherIcon = (icon) => {
-	console.log('icon :>> ', icon);
+	// console.log('icon :>> ', icon);
 	switch (icon) {
 		case 'partly-cloudy-day':
 			return 'day-cloudy'

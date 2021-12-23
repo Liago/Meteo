@@ -3,9 +3,6 @@ import { round } from 'lodash'
 import { LocationMarkerIcon } from "@heroicons/react/outline";
 
 const Today = ({ data, location, summary }) => {
-	// console.log('Today :>> ', data);
-	// console.log('Location :>> ', location);
-
 	const renderTemperature = () => {
 		if (data.temperatureHigh)
 			return <div className="flex justify-between">
@@ -30,33 +27,34 @@ const Today = ({ data, location, summary }) => {
 	const renderCardHeader = () => {
 		if (data.sunriseTime)
 			return (
-				<div className="flex flex-auto">
-					<LocationMarkerIcon className="h-5 w-5" />
-					<h3 className="text-lg leading-6 font-medium text-gray-900 pl-3">{location.city}</h3>
+				<div className="text-right">
+					<h3 className="text-right text-sm font-light text-gray-900 pl-3">{getDataFormatted(data.time, 'dddd DD MMMM YYYY')}</h3>
+					<span className="text-sm lowercase font-light text-red-700 pl-3">{data.summary}</span>
 				</div>
 			)
 
 		return (
-			<div className="flex justify-end">
-				<i className={`wi wi-${getWeatherIcon(summary.icon)}`} />
-				<span className="text-sm font-light text-red-700 pl-3">{summary.text}</span>
-			</div>
+			<>
+				<h3 className="text-right text-sm font-light text-gray-900 pl-3">Adesso, {getDataFormatted(data.time, 'dddd DD MMMM YYYY')}</h3>
+				<div className="flex justify-end">
+					<i className={`wi wi-${getWeatherIcon(summary.icon)}`} />
+					<span className="text-sm lowercase font-light text-red-700 pl-3">{summary.text}</span>
+				</div>
+			</>
 		)
 	}
 	return (
 		<div>
-			<div className="py-3"></div>
 			<div className="bg-white shadow-md rounded-lg w-full pt-3">
 				<div className="px-4 py-5 sm:px-6">
 					{renderCardHeader()}
-					<h3 className="text-right text-sm font-light text-gray-900 pl-3">{getDataFormatted(data.time, 'dddd DD MMMM YYYY')}</h3>
 					<div className="flex justify-between pt-8">
 						<div className="text-6xl text-grey-600 text-center">
 							<i className={`wi wi-${getWeatherIcon(data.icon)}`} />
 						</div>
 						{renderTemperature()}
 					</div>
-					<div className="flex justify-between py-3">
+					<div className="flex justify-between pt-3 pb-1.5">
 						<div className="flex justify-end font-normal text-xs">
 							{renderSunriseTime()}
 						</div>

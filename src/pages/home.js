@@ -9,6 +9,7 @@ import Today from "../components/cards/today";
 import Daily from "../components/cards/daily";
 
 import { saveForecastData } from "../store/actions";
+import Slider from "react-slick";
 import { isNil } from "lodash";
 
 const Home = () => {
@@ -19,6 +20,13 @@ const Home = () => {
 	const [location, setLocation] = useState(null);
 	const [currentDay, setCurrentDay] = useState(null);
 	const [daily, setDaily] = useState(null);
+	const [slideOptions, setSlideOptions] = useState({
+		dots: true,
+		infinite: true,
+		speed: 500,
+		slidesToShow: 1,
+		slidesToScroll: 1
+	});
 
 	console.log('forecast :>> ', forecast);
 
@@ -50,8 +58,6 @@ const Home = () => {
 		fetchWeather(currentLocation).then((response) => {
 			console.log('response :>> ', response);
 			dispatch(saveForecastData(response))
-			// setCurrentDay(response.daily.data[0])
-			// setDaily(response.daily.data)
 		})
 
 	}, [currentLocation]);
@@ -95,18 +101,18 @@ const Home = () => {
 					<IonButtons slot="start">
 						<IonMenuButton />
 					</IonButtons>
-					<IonTitle>{name}</IonTitle>
+					<IonTitle>{location?.city}</IonTitle>
 				</IonToolbar>
 			</IonHeader>
 			<Layout>
-				<IonHeader collapse="condense">
-					<IonToolbar>
-						<IonTitle size="large">{forecast.daily.summary}</IonTitle>
-					</IonToolbar>
-				</IonHeader>
 				<div className="container mx-auto px-4">
-					{renderToday()}
-					{renderNow()}
+					<Slider
+						className="p-4"
+						{...slideOptions}
+					>
+						{renderNow()}
+						{renderToday()}
+					</Slider>
 					{renderWeekdays()}
 				</div>
 			</Layout>

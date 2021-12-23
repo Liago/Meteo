@@ -18,7 +18,7 @@ const Daily = ({ data }) => {
 							<div className="text-blue-500 flex items-center">{round(data.temperatureLow)}° <ArrowDownIcon className="h-3 w-3 text-blue-500" /></div>
 						</div>
 					</div>
-					<div className="text-center text-base">
+					<div className="text-center text-sm">
 						<i className={`wi wi-${getWeatherIcon(data.icon)}`} />
 						<div className="font-light">{round(data.precipProbability * 100)}%</div>
 					</div>

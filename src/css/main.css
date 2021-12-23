@@ -2,4 +2,4 @@
 @tailwind components;
 @tailwind utilities;
 
-@import './weather-icons.css'
+@import './weather-icons.css';

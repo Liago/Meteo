@@ -11,7 +11,7 @@ import { isNil } from "lodash";
 import { save } from "ionicons/icons";
 import Daily from "../components/cards/daily";
 
-const Page = () => {
+const Home = () => {
 	const dispatch = useDispatch();
 	const { name } = useParams();
 	const { forecast } = useSelector(state => state.app);
@@ -100,4 +100,4 @@ const Page = () => {
 	);
 };
 
-export default Page;
+export default Home;

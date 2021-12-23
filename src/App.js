@@ -7,7 +7,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import { persistor, store } from "./store/store";
 import { ThemeContext } from './components/themeContext'
 import Menu from "./components/Menu";
-import Page from "./pages/Page";
+import Home from "./pages/home";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -28,6 +28,7 @@ import "@ionic/react/css/display.css";
 /* Theme variables */
 import "./theme/variables.css";
 import "./css/main.css";
+import Graph from "./pages/graph";
 
 
 const App = () => {
@@ -43,12 +44,8 @@ const App = () => {
 						<IonSplitPane contentId="main">
 							<Menu />
 							<IonRouterOutlet id="main">
-								<Route path="/" exact={true}>
-									<Redirect to="/page/Today" />
-								</Route>
-								<Route path="/page/:name" exact={true}>
-									<Page />
-								</Route>
+								<Route path="/" exact={true} component={Home} />
+								<Route path="/graph" exact={true} component={Graph} />
 							</IonRouterOutlet>
 						</IonSplitPane>
 					</IonReactRouter>

@@ -1,25 +1,27 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
-import { IonButtons, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from "@ionic/react";
-import { fetchWeather, getLocation } from "../rest/rest";
+import { IonButton, IonButtons, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from "@ionic/react";
 
 import Layout from "../components/layout";
 import Today from "../components/cards/today";
 import Daily from "../components/cards/daily";
+import Search from "../components/search/search";
+import Container from '../components/UI/container';
 
 import { saveForecastData } from "../store/actions";
+import { fetchWeather, getLocation, searchCity } from "../rest/rest";
+
 import Slider from "react-slick";
 import { isNil } from "lodash";
 
 const Home = () => {
 	const dispatch = useDispatch();
-	const { name } = useParams();
 	const { forecast } = useSelector(state => state.app);
 	const [currentLocation, seCurrentLocation] = useState();
 	const [location, setLocation] = useState(null);
-	const [currentDay, setCurrentDay] = useState(null);
-	const [daily, setDaily] = useState(null);
+	const [showModal, setShowModal] = useState(false);
+	const [searchText, setSearchText] = useState('');
+	const [searchResults, setSearchResults] = useState(null);
 	const [slideOptions, setSlideOptions] = useState({
 		dots: true,
 		infinite: true,
@@ -28,7 +30,16 @@ const Home = () => {
 		slidesToScroll: 1
 	});
 
-	console.log('forecast :>> ', forecast);
+	console.log('forecast :>> ', forecast)
+
+	useEffect(() => {
+		if (searchText === '') return;
+
+		searchCity(searchText).then(response =>{
+			console.log(`search City`, response)
+			setSearchResults(response);
+		})
+	}, [searchText])
 
 	useEffect(() => {
 		navigator.geolocation.getCurrentPosition(
@@ -102,10 +113,11 @@ const Home = () => {
 						<IonMenuButton />
 					</IonButtons>
 					<IonTitle>{location?.city}</IonTitle>
+					<IonButton onClick={() => setShowModal(true)}>click</IonButton>
 				</IonToolbar>
 			</IonHeader>
 			<Layout>
-				<div className="container mx-auto px-4">
+				<Container paddingX={4} marginX="auto">
 					<Slider
 						className="p-4"
 						{...slideOptions}
@@ -114,7 +126,14 @@ const Home = () => {
 						{renderToday()}
 					</Slider>
 					{renderWeekdays()}
-				</div>
+				</Container>
+				<Search
+					searchText={searchText}
+					setSearchText={setSearchText}
+					showModal={showModal}
+					setShowModal={setShowModal}
+					searchResults={searchResults}
+				/>
 			</Layout>
 		</IonPage>
 	);

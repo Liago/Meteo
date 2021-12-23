@@ -1,13 +1,15 @@
 import { IonApp, IonRouterOutlet, IonSplitPane, setupIonicReact } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
-import { Redirect, Route } from "react-router-dom";
+import { Route } from "react-router-dom";
 import { Provider } from "react-redux";
 import { useContext } from "react";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistor, store } from "./store/store";
 import { ThemeContext } from './components/themeContext'
+
 import Menu from "./components/Menu";
 import Home from "./pages/home";
+import Graph from "./pages/graph";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -28,7 +30,6 @@ import "@ionic/react/css/display.css";
 /* Theme variables */
 import "./theme/variables.css";
 import "./css/main.css";
-import Graph from "./pages/graph";
 
 
 const App = () => {

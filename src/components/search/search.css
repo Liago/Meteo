@@ -1,0 +1,6 @@
+
+ion-label {
+	--color: rgba(17, 24, 39, var(--tw-text-opacity)) !important;
+	font-size: 0.85rem !important;
+	font-weight: 300 !important;
+}

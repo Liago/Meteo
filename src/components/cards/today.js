@@ -2,32 +2,63 @@ import { getDataFormatted, getWeatherIcon } from "../../utils/utils";
 import { round } from 'lodash'
 import { LocationMarkerIcon } from "@heroicons/react/outline";
 
-const Today = ({ data, location }) => {
+const Today = ({ data, location, summary }) => {
 	// console.log('Today :>> ', data);
 	// console.log('Location :>> ', location);
+
+	const renderTemperature = () => {
+		if (data.temperatureHigh)
+			return <div className="flex justify-between">
+				<p className="text-6xl font-medium text-gray-700">{round(data.temperatureHigh)}º</p>
+				<p className="text-6xl font-medium text-gray-400">{round(data.temperatureLow)}º</p>
+			</div>
+
+		return <div className="flex justify-between">
+			<p className="text-6xl font-medium text-gray-700">{round(data.temperature)}º</p>
+		</div>
+	}
+	const renderSunriseTime = () => {
+		if (!data.sunriseTime) return;
+
+		return (
+			<>
+				<div className="flex items-center text-gray-700"><i className="wi wi-sunrise text-gray-500" /> {getDataFormatted(data.sunriseTime, 'HH:mm')}</div>
+				<div className="flex items-center text-gray-700 px-1"><i className="wi wi-sunset text-gray-500" /> {getDataFormatted(data.sunsetTime, 'HH:mm')}</div>
+			</>
+		)
+	}
+	const renderCardHeader = () => {
+		if (data.sunriseTime)
+			return (
+				<div className="flex flex-auto">
+					<LocationMarkerIcon className="h-5 w-5" />
+					<h3 className="text-lg leading-6 font-medium text-gray-900 pl-3">{location.city}</h3>
+				</div>
+			)
+
+		return (
+			<div className="flex justify-end">
+				<i className={`wi wi-${getWeatherIcon(summary.icon)}`} />
+				<span className="text-sm font-light text-red-700 pl-3">{summary.text}</span>
+			</div>
+		)
+	}
 	return (
 		<div>
 			<div className="py-3"></div>
 			<div className="bg-white shadow-md rounded-lg w-full pt-3">
 				<div className="px-4 py-5 sm:px-6">
-					<div className="flex flex-auto">
-						<LocationMarkerIcon className="h-5 w-5" />
-						<h3 className="text-lg leading-6 font-medium text-gray-900 pl-3">{location.city}</h3>
-					</div>
+					{renderCardHeader()}
 					<h3 className="text-right text-sm font-light text-gray-900 pl-3">{getDataFormatted(data.time, 'dddd DD MMMM YYYY')}</h3>
 					<div className="flex justify-between pt-8">
 						<div className="text-6xl text-grey-600 text-center">
 							<i className={`wi wi-${getWeatherIcon(data.icon)}`} />
 						</div>
-						<div className="flex justify-between">
-							<p className="text-6xl font-medium text-gray-700">{round(data.temperatureHigh)}º</p>
-							<p className="text-6xl font-medium text-gray-400">{round(data.temperatureLow)}º</p>
-						</div>
+						{renderTemperature()}
 					</div>
 					<div className="flex justify-between py-3">
 						<div className="flex justify-end font-normal text-xs">
-							<div className="flex items-center text-gray-700"><i className="wi wi-sunrise text-gray-500" /> {getDataFormatted(data.sunriseTime, 'HH:mm')}</div>
-							<div className="flex items-center text-gray-700 px-1"><i className="wi wi-sunset text-gray-500" /> {getDataFormatted(data.sunsetTime, 'HH:mm')}</div>
+							{renderSunriseTime()}
 						</div>
 						<div className="text-xs text-right font-light text-gray-900">{data.summary}</div>
 					</div>

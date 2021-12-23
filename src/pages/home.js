@@ -6,10 +6,10 @@ import { fetchWeather, getLocation } from "../rest/rest";
 
 import Layout from "../components/layout";
 import Today from "../components/cards/today";
+import Daily from "../components/cards/daily";
+
 import { saveForecastData } from "../store/actions";
 import { isNil } from "lodash";
-import { save } from "ionicons/icons";
-import Daily from "../components/cards/daily";
 
 const Home = () => {
 	const dispatch = useDispatch();
@@ -62,6 +62,19 @@ const Home = () => {
 
 		return <Today location={location} data={forecast.daily.data[0]} />;
 	};
+	const renderNow = () => {
+		if (!location) return;
+		if (!forecast) return;
+
+		return <Today
+			location={location}
+			data={forecast.currently}
+			summary={{
+				text: forecast.daily.summary,
+				icon: forecast.daily.icon
+			}}
+		/>;
+	};
 
 	const renderWeekdays = () => {
 		if (!location) return;
@@ -88,11 +101,12 @@ const Home = () => {
 			<Layout>
 				<IonHeader collapse="condense">
 					<IonToolbar>
-						<IonTitle size="large">{name}</IonTitle>
+						<IonTitle size="large">{forecast.daily.summary}</IonTitle>
 					</IonToolbar>
 				</IonHeader>
 				<div className="container mx-auto px-4">
 					{renderToday()}
+					{renderNow()}
 					{renderWeekdays()}
 				</div>
 			</Layout>

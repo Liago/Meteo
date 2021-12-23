@@ -2,4 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@import './weather-icons.css'
+@import './weather-icons.css';
+@import "slick-carousel/slick/slick.css";
+@import "slick-carousel/slick/slick-theme.css";

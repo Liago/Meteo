@@ -23,16 +23,16 @@ import { useContext } from "react";
 const appPages = [
 	{
 		title: "Today",
-		url: "/page/Inbox",
+		url: "/",
 		iosIcon: mailOutline,
 		mdIcon: mailSharp,
 	},
-	// {
-	// 	title: "Outbox",
-	// 	url: "/page/Outbox",
-	// 	iosIcon: paperPlaneOutline,
-	// 	mdIcon: paperPlaneSharp,
-	// },
+	{
+		title: "Graph",
+		url: "/graph",
+		iosIcon: paperPlaneOutline,
+		mdIcon: paperPlaneSharp,
+	},
 	// {
 	// 	title: "Favorites",
 	// 	url: "/page/Favorites",

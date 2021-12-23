@@ -6,12 +6,13 @@ import { fetchWeather, getLocation } from "../rest/rest";
 
 import Layout from "../components/layout";
 import Today from "../components/cards/today";
-import { saveForecastData } from "../store/actions";
-import { isNil } from "lodash";
-import { save } from "ionicons/icons";
 import Daily from "../components/cards/daily";
 
-const Page = () => {
+import { saveForecastData } from "../store/actions";
+import Slider from "react-slick";
+import { isNil } from "lodash";
+
+const Home = () => {
 	const dispatch = useDispatch();
 	const { name } = useParams();
 	const { forecast } = useSelector(state => state.app);
@@ -19,6 +20,13 @@ const Page = () => {
 	const [location, setLocation] = useState(null);
 	const [currentDay, setCurrentDay] = useState(null);
 	const [daily, setDaily] = useState(null);
+	const [slideOptions, setSlideOptions] = useState({
+		dots: true,
+		infinite: true,
+		speed: 500,
+		slidesToShow: 1,
+		slidesToScroll: 1
+	});
 
 	console.log('forecast :>> ', forecast);
 
@@ -50,8 +58,6 @@ const Page = () => {
 		fetchWeather(currentLocation).then((response) => {
 			console.log('response :>> ', response);
 			dispatch(saveForecastData(response))
-			// setCurrentDay(response.daily.data[0])
-			// setDaily(response.daily.data)
 		})
 
 	}, [currentLocation]);
@@ -61,6 +67,19 @@ const Page = () => {
 		if (!forecast) return;
 
 		return <Today location={location} data={forecast.daily.data[0]} />;
+	};
+	const renderNow = () => {
+		if (!location) return;
+		if (!forecast) return;
+
+		return <Today
+			location={location}
+			data={forecast.currently}
+			summary={{
+				text: forecast.daily.summary,
+				icon: forecast.daily.icon
+			}}
+		/>;
 	};
 
 	const renderWeekdays = () => {
@@ -82,17 +101,18 @@ const Page = () => {
 					<IonButtons slot="start">
 						<IonMenuButton />
 					</IonButtons>
-					<IonTitle>{name}</IonTitle>
+					<IonTitle>{location?.city}</IonTitle>
 				</IonToolbar>
 			</IonHeader>
 			<Layout>
-				<IonHeader collapse="condense">
-					<IonToolbar>
-						<IonTitle size="large">{name}</IonTitle>
-					</IonToolbar>
-				</IonHeader>
 				<div className="container mx-auto px-4">
-					{renderToday()}
+					<Slider
+						className="p-4"
+						{...slideOptions}
+					>
+						{renderNow()}
+						{renderToday()}
+					</Slider>
 					{renderWeekdays()}
 				</div>
 			</Layout>
@@ -100,4 +120,4 @@ const Page = () => {
 	);
 };
 
-export default Page;
+export default Home;

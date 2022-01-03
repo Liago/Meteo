@@ -10,7 +10,8 @@ export const getWeatherIcon = (icon) => {
 	switch (icon) {
 		case 'partly-cloudy-day':
 			return 'day-cloudy'
-	
+		case 'clear-day':
+			return 'day-sunny'
 		default:
 			return icon
 	}

@@ -8,7 +8,7 @@ import Daily from "../components/cards/daily";
 import Search from "../components/search/search";
 import Container from '../components/UI/container';
 
-import { saveForecastData } from "../store/actions";
+import { saveLocation, saveLocationForecastData } from "../store/actions";
 import { fetchWeather, getLocation, searchCity } from "../rest/rest";
 
 import Slider from "react-slick";
@@ -16,7 +16,8 @@ import { isNil } from "lodash";
 
 const Home = () => {
 	const dispatch = useDispatch();
-	const { forecast } = useSelector(state => state.app);
+	const { forecast } = useSelector(state => state);
+	const { locations } = useSelector(state => state.app);
 	const [currentLocation, seCurrentLocation] = useState();
 	const [location, setLocation] = useState(null);
 	const [showModal, setShowModal] = useState(false);
@@ -30,26 +31,47 @@ const Home = () => {
 		slidesToScroll: 1
 	});
 
-	console.log('forecast :>> ', forecast)
+	// console.log('forecast :>> ', forecast)
 
 	useEffect(() => {
 		if (searchText === '') return;
 
-		searchCity(searchText).then(response =>{
+		searchCity(searchText).then(response => {
 			console.log(`search City`, response)
+
 			setSearchResults(response);
 		})
 	}, [searchText])
 
 	useEffect(() => {
+		if (!currentLocation) return;
+
+		console.log(`location change`, currentLocation)
+		seCurrentLocation(currentLocation);
+		getLocation(currentLocation).then(response => {
+			setLocation(response)
+		});
+	}, [currentLocation])
+
+	useEffect(() => {
+		if (!location) return;
+
+		console.log('location :>> ', location.place_id);
+		if (forecast[location.place_id]) return;
+
+		fetchWeather(currentLocation).then((response) => {
+			console.log('response :>> ', response);
+			dispatch(saveLocation(location.place_id))
+			dispatch(saveLocationForecastData({ location: location.place_id, forecast: response }))
+		})
+	}, [location])
+
+	useEffect(() => {
 		navigator.geolocation.getCurrentPosition(
 			(pos) => {
 				let coordinates = pos.coords;
+				console.log(`coordinates`, coordinates)
 				seCurrentLocation(coordinates);
-				getLocation(coordinates).then(response => {
-					console.log('geolocation :>> ', response);
-					setLocation(response.address)
-				});
 			},
 			(err) => {
 				console.warn(`Error ${err.code}: ${err.message}`);
@@ -61,18 +83,7 @@ const Home = () => {
 			}
 		);
 	}, []);
-
-	useEffect(() => {
-		if (!currentLocation) return;
-		if (!isNil(forecast)) return;
-
-		fetchWeather(currentLocation).then((response) => {
-			console.log('response :>> ', response);
-			dispatch(saveForecastData(response))
-		})
-
-	}, [currentLocation]);
-
+	
 	const renderToday = () => {
 		if (!location) return;
 		if (!forecast) return;
@@ -112,7 +123,7 @@ const Home = () => {
 					<IonButtons slot="start">
 						<IonMenuButton />
 					</IonButtons>
-					<IonTitle>{location?.city}</IonTitle>
+					<IonTitle>{location?.address?.city}</IonTitle>
 					<IonButton onClick={() => setShowModal(true)}>click</IonButton>
 				</IonToolbar>
 			</IonHeader>
@@ -122,10 +133,10 @@ const Home = () => {
 						className="p-4"
 						{...slideOptions}
 					>
-						{renderNow()}
-						{renderToday()}
+						{/* {renderNow()}
+						{renderToday()} */}
 					</Slider>
-					{renderWeekdays()}
+					{/* {renderWeekdays()} */}
 				</Container>
 				<Search
 					searchText={searchText}
@@ -133,6 +144,7 @@ const Home = () => {
 					showModal={showModal}
 					setShowModal={setShowModal}
 					searchResults={searchResults}
+					setCurrentLocation={setLocation}
 				/>
 			</Layout>
 		</IonPage>

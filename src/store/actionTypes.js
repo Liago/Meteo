@@ -1,1 +1,2 @@
 export const SAVE_FORECAST_DATA = "SAVE_FORECAST_DATA";
+export const SAVE_LOCATION = "SAVE_LOCATION";

@@ -1,7 +1,7 @@
 import { IonItem, IonLabel, IonModal, IonSearchbar } from "@ionic/react";
 import './search.css'
 
-const Search = ({ showModal, setShowModal, searchText, setSearchText, searchResults }) => {
+const Search = ({ showModal, setShowModal, searchText, setSearchText, searchResults, setCurrentLocation }) => {
 	const renderResults = () => {
 		if (!searchResults) return;
 
@@ -10,7 +10,10 @@ const Search = ({ showModal, setShowModal, searchText, setSearchText, searchResu
 				return (
 					<IonItem
 						key={city.place_id}
-						button onClick={() => { console.log(city) }}
+						button onClick={() => { 
+							console.log('city searched', city) 
+							setCurrentLocation({latitude: city.lat, longitude: city.lon})
+						}}
 						detail
 					>
 						<IonLabel>{city.display_name}</IonLabel>

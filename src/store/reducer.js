@@ -16,7 +16,7 @@ const app = (state = initialState.app, action) => {
 		case actionTypes.SAVE_LOCATION:
 			return {
 				...state,
-				locations: [action.payload]
+				locations: [...state.locations, action.payload]
 			};
 		default:
 			return state;

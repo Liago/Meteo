@@ -1,24 +1,18 @@
-import { IonContent, IonIcon, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonMenuToggle, IonNote, IonToggle } from "@ionic/react";
+import { IonContent, IonIcon, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonMenuToggle, IonToggle } from "@ionic/react";
 
 import { useLocation } from "react-router-dom";
 import { ThemeContext } from "./themeContext";
 import {
-	archiveOutline,
-	archiveSharp,
 	bookmarkOutline,
-	heartOutline,
-	heartSharp,
 	mailOutline,
 	mailSharp,
 	paperPlaneOutline,
 	paperPlaneSharp,
-	trashOutline,
-	trashSharp,
-	warningOutline,
-	warningSharp,
 } from "ionicons/icons";
 import "./Menu.css";
 import { useContext } from "react";
+import { useSelector } from "react-redux";
+
 
 const appPages = [
 	{
@@ -59,10 +53,9 @@ const appPages = [
 	// },
 ];
 
-const labels = ["Family", "Friends", "Notes", "Work", "Travel", "Reminders"];
-
 const Menu = () => {
 	const location = useLocation();
+	const { locations } = useSelector(state => state.app);
 
 	const { toggle, toggleFunction } = useContext(ThemeContext);
 
@@ -91,16 +84,15 @@ const Menu = () => {
 						);
 					})}
 				</IonList>
-{/* 
 				<IonList id="labels-list">
-					<IonListHeader>Labels</IonListHeader>
-					{labels.map((label, index) => (
-						<IonItem lines="none" key={index}>
+					<IonListHeader>Città</IonListHeader>
+					{locations.map(city => (
+						<IonItem lines="none" key={city.id}>
 							<IonIcon slot="start" icon={bookmarkOutline} />
-							<IonLabel>{label}</IonLabel>
+							<IonLabel>{city.name}</IonLabel>
 						</IonItem>
 					))}
-				</IonList> */}
+				</IonList>
 			</IonContent>
 		</IonMenu>
 	);

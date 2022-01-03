@@ -15,5 +15,11 @@ export const getWeatherIcon = (icon) => {
 		default:
 			return icon
 	}
+}
 
+export const addCoordinates = (location) => {
+	let coordinates = location;
+	coordinates['latitude'] = location.lat;
+	coordinates['longitude'] = location.lon;
+	return coordinates;
 }

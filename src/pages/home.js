@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { IonButton, IonButtons, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from "@ionic/react";
+import { IonButton, IonButtons, IonHeader, IonIcon, IonMenuButton, IonPage, IonTitle, IonToolbar } from "@ionic/react";
 
 import Layout from "../components/layout";
 import Today from "../components/cards/today";
@@ -12,12 +12,12 @@ import { saveLocation, saveLocationForecastData } from "../store/actions";
 import { fetchWeather, getLocation, searchCity } from "../rest/rest";
 
 import Slider from "react-slick";
-import { isNil } from "lodash";
+import { search } from "ionicons/icons";
+import { addCoordinates } from "utils/utils";
 
 const Home = () => {
 	const dispatch = useDispatch();
 	const { forecast } = useSelector(state => state);
-	const { locations } = useSelector(state => state.app);
 	const [currentLocation, seCurrentLocation] = useState();
 	const [location, setLocation] = useState(null);
 	const [showModal, setShowModal] = useState(false);
@@ -36,32 +36,31 @@ const Home = () => {
 	useEffect(() => {
 		if (searchText === '') return;
 
-		searchCity(searchText).then(response => {
-			console.log(`search City`, response)
-
-			setSearchResults(response);
-		})
+		searchCity(searchText).then(response => setSearchResults(response))
 	}, [searchText])
 
 	useEffect(() => {
 		if (!currentLocation) return;
-
-		console.log(`location change`, currentLocation)
+		console.log(`currentLocation1`, currentLocation)
 		seCurrentLocation(currentLocation);
+		console.log(`currentLocation2`, currentLocation)
 		getLocation(currentLocation).then(response => {
+			console.log(`currentLocation3`, response)
 			setLocation(response)
 		});
 	}, [currentLocation])
 
 	useEffect(() => {
 		if (!location) return;
-
-		console.log('location :>> ', location.place_id);
 		if (forecast[location.place_id]) return;
 
-		fetchWeather(currentLocation).then((response) => {
+		console.log('location to FetchWeather :>> ', location);
+		let coordinates = addCoordinates(location);
+		console.log('coordinates :>> ', coordinates);
+
+		fetchWeather(location).then((response) => {
 			console.log('response :>> ', response);
-			dispatch(saveLocation(location.place_id))
+			dispatch(saveLocation({ 'id': location.place_id, 'name': location.display_name }))
 			dispatch(saveLocationForecastData({ location: location.place_id, forecast: response }))
 		})
 	}, [location])
@@ -83,39 +82,51 @@ const Home = () => {
 			}
 		);
 	}, []);
-	
+
 	const renderToday = () => {
 		if (!location) return;
-		if (!forecast) return;
+		if (!forecast[location.place_id]) return;
 
-		return <Today location={location} data={forecast.daily.data[0]} />;
+		return <Today location={location} data={forecast[location.place_id].daily.data[0]} />;
 	};
 	const renderNow = () => {
 		if (!location) return;
-		if (!forecast) return;
+		if (!forecast[location.place_id]) return;
 
 		return <Today
 			location={location}
-			data={forecast.currently}
+			data={forecast[location.place_id].currently}
 			summary={{
-				text: forecast.daily.summary,
-				icon: forecast.daily.icon
+				text: forecast[location.place_id].daily.summary,
+				icon: forecast[location.place_id].daily.icon
 			}}
 		/>;
 	};
 
 	const renderWeekdays = () => {
 		if (!location) return;
-		if (!forecast) return;
+		if (!forecast[location.place_id]) return;
 
 		return (
-			forecast.daily.data.map((day, i) => {
+			forecast[location.place_id].daily.data.map((day, i) => {
 				if (i >= 1)
 					return <Daily key={i} data={day} />;
 			})
 		)
 	}
 
+	const setLocationFromSearch = (locationCoordinates) => {
+		let coordinates = addCoordinates(locationCoordinates);
+		setLocation(coordinates)
+	}
+	const renderCityName = () => {
+		if (!location) return;
+
+		if (location?.address)
+			return <span>{location?.address?.city}</span>
+
+		return <div><p>{location.display_name.split(',')[0]}</p><p className="text-xs font-thin">({location.display_name.split(',')[1]})</p></div>
+	}
 	return (
 		<IonPage>
 			<IonHeader>
@@ -123,8 +134,14 @@ const Home = () => {
 					<IonButtons slot="start">
 						<IonMenuButton />
 					</IonButtons>
-					<IonTitle>{location?.address?.city}</IonTitle>
-					<IonButton onClick={() => setShowModal(true)}>click</IonButton>
+					<IonTitle>{renderCityName()}</IonTitle>
+					<IonButtons slot="primary">
+						<IonButton
+							onClick={() => setShowModal(true)}
+						>
+							<IonIcon slot="icon-only" icon={search} />
+						</IonButton>
+					</IonButtons>
 				</IonToolbar>
 			</IonHeader>
 			<Layout>
@@ -133,10 +150,10 @@ const Home = () => {
 						className="p-4"
 						{...slideOptions}
 					>
-						{/* {renderNow()}
-						{renderToday()} */}
+						{renderNow()}
+						{renderToday()}
 					</Slider>
-					{/* {renderWeekdays()} */}
+					{renderWeekdays()}
 				</Container>
 				<Search
 					searchText={searchText}
@@ -144,7 +161,7 @@ const Home = () => {
 					showModal={showModal}
 					setShowModal={setShowModal}
 					searchResults={searchResults}
-					setCurrentLocation={setLocation}
+					setCurrentLocation={setLocationFromSearch}
 				/>
 			</Layout>
 		</IonPage>

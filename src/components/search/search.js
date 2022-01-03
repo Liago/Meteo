@@ -12,7 +12,7 @@ const Search = ({ showModal, setShowModal, searchText, setSearchText, searchResu
 						key={city.place_id}
 						button onClick={() => { 
 							console.log('city searched', city) 
-							setCurrentLocation({latitude: city.lat, longitude: city.lon})
+							setCurrentLocation(city)
 						}}
 						detail
 					>

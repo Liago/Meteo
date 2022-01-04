@@ -62,10 +62,10 @@ const Today = ({ data, location, summary }) => {
 					</div>
 					<div className="flex justify-between w-full font-normal text-xs pt-2">
 						<div className="flex items-center text-gray-700 pr-1"><i className="wi wi-rain" />
-							<span className="px-1">{data.precipProbability * 100}%</span>
+							<span className="px-1">{round(data.precipProbability * 100)}%</span>
 						</div>
 						<div className="flex items-center text-gray-700 pl-1"><i className="wi wi-cloud" />
-							<span className="px-1">{data.cloudCover * 100}%</span>
+							<span className="px-1">{round(data.cloudCover * 100)}%</span>
 						</div>
 						<div className="flex items-center text-gray-700 pl-1"><i className="wi wi-strong-wind" />
 							<span className="px-1">{round(data.windSpeed, 1)}m/s</span>

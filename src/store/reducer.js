@@ -1,6 +1,3 @@
-import _ from "lodash";
-// import { reducer as formReducer } from 'redux-form';
-
 import * as actionTypes from "./actionTypes";
 
 const initialState = {
@@ -8,7 +5,7 @@ const initialState = {
 		darkMode: false,
 		locations: []
 	},
-	forecast: {}
+	forecast: []
 };
 
 const app = (state = initialState.app, action) => {
@@ -18,6 +15,12 @@ const app = (state = initialState.app, action) => {
 				...state,
 				locations: [...state.locations, action.payload]
 			};
+		case actionTypes.REMOVE_LOCATION:
+			const newLocations = state.locations.filter(item => item.id !== action.payload)
+			return {
+				...state,
+				locations: newLocations
+			}
 		default:
 			return state;
 	}
@@ -29,7 +32,17 @@ const forecast = (state = initialState.forecast, action) => {
 			return {
 				...state,
 				[action.payload.location]: action.payload.forecast
-			}
+			};
+		case actionTypes.REMOVE_LOCATION_DATA:
+			const newForecasts = Object.keys(state).reduce((acc, key) => {
+				console.log('key :>> ', key);
+				if (parseInt(key) !== parseInt(action.payload))
+					acc[key] = state[key]
+
+				return acc
+			}, {})
+			return newForecasts
+
 		default:
 			return state;
 	}

@@ -26,3 +26,14 @@ export const removeLocationForecastData = (payload) => {
 		payload: payload
 	}
 }
+export const setCurrentLocation = (cityId) => {
+	return {
+		type: actionTypes.SET_CURRENT_LOCATION,
+		payload: cityId
+	}
+}
+export const resetStore = () => {
+	return {
+		type: actionTypes.RESET_STORE,
+	}
+}

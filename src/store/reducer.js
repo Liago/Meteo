@@ -3,7 +3,8 @@ import * as actionTypes from "./actionTypes";
 const initialState = {
 	app: {
 		darkMode: false,
-		locations: []
+		locations: [],
+		selectedLocationId: null,
 	},
 	forecast: []
 };
@@ -21,6 +22,13 @@ const app = (state = initialState.app, action) => {
 				...state,
 				locations: newLocations
 			}
+		case actionTypes.SET_CURRENT_LOCATION:
+			return {
+				...state,
+				selectedLocationId: action.payload
+			}
+		case actionTypes.RESET_STORE:
+			return initialState
 		default:
 			return state;
 	}
@@ -35,7 +43,6 @@ const forecast = (state = initialState.forecast, action) => {
 			};
 		case actionTypes.REMOVE_LOCATION_DATA:
 			const newForecasts = Object.keys(state).reduce((acc, key) => {
-				console.log('key :>> ', key);
 				if (parseInt(key) !== parseInt(action.payload))
 					acc[key] = state[key]
 
@@ -43,6 +50,9 @@ const forecast = (state = initialState.forecast, action) => {
 			}, {})
 			return newForecasts
 
+		case actionTypes.RESET_STORE:
+			return initialState
+			
 		default:
 			return state;
 	}

@@ -5,7 +5,7 @@ import { removeCircle } from "ionicons/icons";
 
 import { removeLocation, removeLocationForecastData } from '../../store/actions'
 
-const MenuLocations = ({ locations }) => {
+const MenuLocations = ({ locations, selectCity }) => {
 	const dispatch = useDispatch()
 
 	const removeHandler = (cityId) => {
@@ -15,7 +15,11 @@ const MenuLocations = ({ locations }) => {
 
 	return (
 		locations.map(city => (
-			<IonItem lines="none" key={city.id}>
+			<IonItem 
+			key={city.id} 
+			lines="none" 
+			onClick={() => selectCity(city)}
+			>
 				<IonIcon
 					slot="start"
 					color="danger"

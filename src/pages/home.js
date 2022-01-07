@@ -14,24 +14,31 @@ import { fetchWeather, getLocation, searchCity } from "../rest/rest";
 import Slider from "react-slick";
 import { search } from "ionicons/icons";
 import { addCoordinates } from "utils/utils";
+import Spinner from "components/UI/spinner";
 
 const Home = () => {
 	const dispatch = useDispatch();
 	const { forecast } = useSelector(state => state);
+	const { locations, selectedLocationId } = useSelector(state => state.app);
 	const [currentLocation, seCurrentLocation] = useState();
 	const [location, setLocation] = useState(null);
 	const [showModal, setShowModal] = useState(false);
 	const [searchText, setSearchText] = useState('');
 	const [searchResults, setSearchResults] = useState(null);
-	const [slideOptions, setSlideOptions] = useState({
+	const slideOptions = {
 		dots: true,
 		infinite: true,
 		speed: 500,
 		slidesToShow: 1,
 		slidesToScroll: 1
-	});
+	};
 
-	// console.log('forecast :>> ', forecast)
+	useEffect(() => {
+		if (!selectedLocationId) return;
+
+		seCurrentLocation(selectedLocationId);
+
+	}, [selectedLocationId])
 
 	useEffect(() => {
 		if (searchText === '') return;
@@ -41,27 +48,28 @@ const Home = () => {
 
 	useEffect(() => {
 		if (!currentLocation) return;
-		console.log(`currentLocation1`, currentLocation)
-		seCurrentLocation(currentLocation);
-		console.log(`currentLocation2`, currentLocation)
-		getLocation(currentLocation).then(response => {
-			console.log(`currentLocation3`, response)
-			setLocation(response)
-		});
+		console.log(`currentLocation`, currentLocation)
+
+		getLocation(currentLocation).then(response => setLocation(response));
 	}, [currentLocation])
 
 	useEffect(() => {
 		if (!location) return;
 		if (forecast[location.place_id]) return;
 
-		console.log('location to FetchWeather :>> ', location);
-		let coordinates = addCoordinates(location);
-		console.log('coordinates :>> ', coordinates);
+		addCoordinates(location);
 
 		fetchWeather(location).then((response) => {
-			console.log('response :>> ', response);
-			dispatch(saveLocation({ 'id': location.place_id, 'name': location.display_name }))
-			dispatch(saveLocationForecastData({ location: location.place_id, forecast: response }))
+			dispatch(saveLocation({
+				'id': location.place_id,
+				'name': location.display_name,
+				'latitude': location.latitude,
+				'longitude': location.longitude
+			}))
+			dispatch(saveLocationForecastData({
+				location: location.place_id,
+				forecast: response
+			}))
 		})
 	}, [location])
 
@@ -69,7 +77,6 @@ const Home = () => {
 		navigator.geolocation.getCurrentPosition(
 			(pos) => {
 				let coordinates = pos.coords;
-				console.log(`coordinates`, coordinates)
 				seCurrentLocation(coordinates);
 			},
 			(err) => {
@@ -104,8 +111,8 @@ const Home = () => {
 	};
 
 	const renderWeekdays = () => {
-		if (!location) return;
-		if (!forecast[location.place_id]) return;
+		if (!location) return <Spinner />;
+		if (!forecast[location.place_id]) return <Spinner />;
 
 		return (
 			forecast[location.place_id].daily.data.map((day, i) => {
@@ -117,8 +124,10 @@ const Home = () => {
 
 	const setLocationFromSearch = (locationCoordinates) => {
 		let coordinates = addCoordinates(locationCoordinates);
+		console.log('[SETLOCATIONFORMSEARCH] coordinates :>> ', coordinates);
 		setLocation(coordinates)
 	}
+	
 	const renderCityName = () => {
 		if (!location) return;
 
@@ -126,6 +135,22 @@ const Home = () => {
 			return <span>{location?.address?.city}</span>
 
 		return <div><p>{location.display_name.split(',')[0]}</p><p className="text-xs font-thin">({location.display_name.split(',')[1]})</p></div>
+	}
+	const renderMainContent = () => {
+		if (!location) return <Spinner />;
+
+		return (
+			<>
+				<Slider
+					className="p-4"
+					{...slideOptions}
+				>
+					{renderNow()}
+					{renderToday()}
+				</Slider>
+				{renderWeekdays()}
+			</>
+		)
 	}
 	return (
 		<IonPage>
@@ -146,14 +171,7 @@ const Home = () => {
 			</IonHeader>
 			<Layout>
 				<Container paddingX={4} marginX="auto">
-					<Slider
-						className="p-4"
-						{...slideOptions}
-					>
-						{renderNow()}
-						{renderToday()}
-					</Slider>
-					{renderWeekdays()}
+					{renderMainContent()}
 				</Container>
 				<Search
 					searchText={searchText}

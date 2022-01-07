@@ -1,6 +1,5 @@
 import { getDataFormatted, getWeatherIcon } from "../../utils/utils";
 import { round } from 'lodash'
-import { LocationMarkerIcon } from "@heroicons/react/outline";
 
 const Today = ({ data, location, summary }) => {
 	const renderTemperature = () => {
@@ -37,7 +36,7 @@ const Today = ({ data, location, summary }) => {
 			<>
 				<h3 className="text-right text-sm font-light text-gray-900 pl-3">Adesso, {getDataFormatted(data.time, 'dddd DD MMMM YYYY')}</h3>
 				<div className="flex justify-end">
-					<i className={`wi wi-${getWeatherIcon(summary.icon)}`} />
+					{/* <i className={`wi wi-${getWeatherIcon(summary.icon)}`} /> */}
 					<span className="text-sm lowercase font-light text-red-700 pl-3">{summary.text}</span>
 				</div>
 			</>

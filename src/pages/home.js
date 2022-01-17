@@ -1,20 +1,22 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { IonButton, IonButtons, IonHeader, IonIcon, IonMenuButton, IonPage, IonTitle, IonToolbar } from "@ionic/react";
+import { search } from "ionicons/icons";
 
 import Layout from "../components/layout";
 import Today from "../components/cards/today";
 import Daily from "../components/cards/daily";
 import Search from "../components/search/search";
 import Container from '../components/UI/container';
+import Spinner from "components/UI/spinner";
 
-import { saveLocation, saveLocationForecastData } from "../store/actions";
+import { addCoordinates } from "utils/utils";
+import { saveLocation, saveLocationForecastData, setCurrentLocation } from "../store/actions";
 import { fetchWeather, getLocation, searchCity } from "../rest/rest";
 
 import Slider from "react-slick";
-import { search } from "ionicons/icons";
-import { addCoordinates } from "utils/utils";
-import Spinner from "components/UI/spinner";
+
+import { find } from 'lodash';
 
 const Home = () => {
 	const dispatch = useDispatch();
@@ -34,6 +36,12 @@ const Home = () => {
 	};
 
 	useEffect(() => {
+		getCurrentLocation()
+	}, []);
+
+
+
+	useEffect(() => {
 		if (!selectedLocationId) return;
 
 		seCurrentLocation(selectedLocationId);
@@ -49,8 +57,18 @@ const Home = () => {
 	useEffect(() => {
 		if (!currentLocation) return;
 		console.log(`currentLocation`, currentLocation)
+		console.log(`currentLocation.place_id`, currentLocation.place_id)
+		console.log('currentLocation.longitude :>> ', currentLocation.longitude);
+		console.log('currentLocation.latitude :>> ', currentLocation.latitude);
 
-		getLocation(currentLocation).then(response => setLocation(response));
+		let findSavedLocation = find(locations, ['place_id', currentLocation.place_id])
+		!findSavedLocation
+			? getLocation(currentLocation).then(response => {
+				console.log('response :>> ', response.address.city);
+				searchCity(response.address.city).then(response => setLocationFromSearch(response[0]))
+			})
+			: setLocation(findSavedLocation);
+
 	}, [currentLocation])
 
 	useEffect(() => {
@@ -58,14 +76,10 @@ const Home = () => {
 		if (forecast[location.place_id]) return;
 
 		addCoordinates(location);
+		console.log('location :>> ', location);
 
 		fetchWeather(location).then((response) => {
-			dispatch(saveLocation({
-				'id': location.place_id,
-				'name': location.display_name,
-				'latitude': location.latitude,
-				'longitude': location.longitude
-			}))
+			dispatch(saveLocation(location))
 			dispatch(saveLocationForecastData({
 				location: location.place_id,
 				forecast: response
@@ -73,7 +87,7 @@ const Home = () => {
 		})
 	}, [location])
 
-	useEffect(() => {
+	const getCurrentLocation = () => {
 		navigator.geolocation.getCurrentPosition(
 			(pos) => {
 				let coordinates = pos.coords;
@@ -88,7 +102,7 @@ const Home = () => {
 				maximumAge: 0,
 			}
 		);
-	}, []);
+	}
 
 	const renderToday = () => {
 		if (!location) return;
@@ -109,7 +123,6 @@ const Home = () => {
 			}}
 		/>;
 	};
-
 	const renderWeekdays = () => {
 		if (!location) return <Spinner />;
 		if (!forecast[location.place_id]) return <Spinner />;
@@ -124,10 +137,9 @@ const Home = () => {
 
 	const setLocationFromSearch = (locationCoordinates) => {
 		let coordinates = addCoordinates(locationCoordinates);
-		console.log('[SETLOCATIONFORMSEARCH] coordinates :>> ', coordinates);
 		setLocation(coordinates)
 	}
-	
+
 	const renderCityName = () => {
 		if (!location) return;
 

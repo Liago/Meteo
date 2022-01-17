@@ -16,7 +16,7 @@ const MenuLocations = ({ locations, selectCity }) => {
 	return (
 		locations.map(city => (
 			<IonItem 
-			key={city.id} 
+			key={city.place_id} 
 			lines="none" 
 			onClick={() => selectCity(city)}
 			>
@@ -24,9 +24,9 @@ const MenuLocations = ({ locations, selectCity }) => {
 					slot="start"
 					color="danger"
 					icon={removeCircle}
-					onClick={() => removeHandler(city.id)}
+					onClick={() => removeHandler(city.place_id)}
 				/>
-				<IonLabel>{city.name}</IonLabel>
+				<IonLabel>{city.display_name}</IonLabel>
 			</IonItem>
 		))
 	)

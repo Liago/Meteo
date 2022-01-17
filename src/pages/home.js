@@ -58,14 +58,15 @@ const Home = () => {
 		if (!currentLocation) return;
 		console.log(`currentLocation`, currentLocation)
 		console.log(`currentLocation.place_id`, currentLocation.place_id)
-		console.log('currentLocation.longitude :>> ', currentLocation.longitude);
-		console.log('currentLocation.latitude :>> ', currentLocation.latitude);
 
 		let findSavedLocation = find(locations, ['place_id', currentLocation.place_id])
 		!findSavedLocation
 			? getLocation(currentLocation).then(response => {
 				console.log('response :>> ', response.address.city);
-				searchCity(response.address.city).then(response => setLocationFromSearch(response[0]))
+				searchCity(response.address.city).then(response => {
+					setLocationFromSearch(response[0]);
+					dispatch(setCurrentLocation(response[0]))
+				})
 			})
 			: setLocation(findSavedLocation);
 
@@ -75,7 +76,8 @@ const Home = () => {
 		if (!location) return;
 		if (forecast[location.place_id]) return;
 
-		addCoordinates(location);
+		// console.log('location :>> ', location);
+		// addCoordinates(location);
 		console.log('location :>> ', location);
 
 		fetchWeather(location).then((response) => {

@@ -2,6 +2,7 @@ import { IonItem, IonLabel, IonModal, IonSearchbar } from "@ionic/react";
 import './search.css'
 
 const Search = ({ showModal, setShowModal, searchText, setSearchText, searchResults, setCurrentLocation }) => {
+
 	const renderResults = () => {
 		if (!searchResults) return;
 
@@ -28,7 +29,8 @@ const Search = ({ showModal, setShowModal, searchText, setSearchText, searchResu
 			isOpen={showModal}
 			initialBreakpoint={0.5}
 			breakpoints={[0, 0.5, 1]}
-			onDidDismiss={() => setShowModal(false)}>
+			onDidDismiss={() => setShowModal(false)}
+		>
 			<div className="text-gray-700 px-4" >
 				<IonSearchbar
 					value={searchText}

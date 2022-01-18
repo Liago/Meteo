@@ -173,20 +173,6 @@ const Home = () => {
 		)
 	}
 
-	const renderSearchModal = () => {
-		if (showModal)
-			return (
-				<Search
-					showModal={showModal}
-					setShowModal={setShowModal}
-					searchText={searchText}
-					setSearchText={setSearchText}
-					searchResults={searchResults}
-					setCurrentLocation={setLocationFromSearch}
-				/>
-			)
-	}
-
 	return (
 		<IonPage>
 			<IonHeader>
@@ -197,7 +183,7 @@ const Home = () => {
 					<IonTitle>{renderCityName()}</IonTitle>
 					<IonButtons slot="primary">
 						<IonButton
-							onClick={() => setShowModal(true)}
+							onClick={() => setShowModal(!showModal)}
 						>
 							<IonIcon slot="icon-only" icon={search} />
 						</IonButton>
@@ -207,8 +193,15 @@ const Home = () => {
 			<Layout>
 				<Container paddingX={4} marginX="auto">
 					{renderMainContent()}
+					<Search
+						showModal={showModal}
+						setShowModal={setShowModal}
+						searchText={searchText}
+						setSearchText={setSearchText}
+						searchResults={searchResults}
+						setCurrentLocation={setLocationFromSearch}
+					/>
 				</Container>
-				{renderSearchModal()}
 			</Layout>
 		</IonPage>
 	);

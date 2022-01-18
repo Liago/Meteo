@@ -4,7 +4,7 @@ const initialState = {
 	app: {
 		darkMode: false,
 		locations: [],
-		selectedLocationId: null,
+		selectedLocation: null,
 	},
 	forecast: []
 };
@@ -25,7 +25,7 @@ const app = (state = initialState.app, action) => {
 		case actionTypes.SET_CURRENT_LOCATION:
 			return {
 				...state,
-				selectedLocationId: action.payload
+				selectedLocation: action.payload
 			}
 		case actionTypes.RESET_STORE:
 			return initialState

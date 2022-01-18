@@ -12,14 +12,7 @@ export const fetchWeather = ({ latitude, longitude }) => {
 			'x-rapidapi-key': KEY
 		}
 	};
-	return new Promise((ok, ko) => {
-		axios.request(options).then(function (response) {
-			ok(response.data)
-		}).catch(function (error) {
-			console.error(error);
-			ko(error)
-		});
-	});
+	return promiseFunction(options)
 }
 
 export const getLocation = ({ latitude, longitude }) => {
@@ -27,15 +20,7 @@ export const getLocation = ({ latitude, longitude }) => {
 		method: 'GET',
 		url: `https://eu1.locationiq.com/v1/reverse.php?key=${LOCATION_IQ_TOKEN}&lat=${latitude}&lon=${longitude}&format=json`,
 	};
-
-	return new Promise((ok, ko) => {
-		axios.request(options).then(function (response) {
-			ok(response.data)
-		}).catch(function (error) {
-			console.error(error);
-			ko(error)
-		});
-	});
+	return promiseFunction(options)
 }
 
 export const searchCity = (city) => {
@@ -43,17 +28,14 @@ export const searchCity = (city) => {
 		method: 'GET',
 		url: `https://eu1.locationiq.com/v1/search.php?key=${LOCATION_IQ_TOKEN}&q=${city}&format=json`,
 	};
+	return promiseFunction(options)
+}
 
+
+const promiseFunction = (options) => {
 	return new Promise((ok, ko) => {
-		axios.request(options).then(function (response) {
-			ok(response.data)
-		}).catch(function (error) {
-			console.error(error);
-			ko(error)
-		});
+		axios.request(options)
+			.then(response => ok(response.data))
+			.catch(error => ko(error));
 	});
-
-} 
-
-
-
+}

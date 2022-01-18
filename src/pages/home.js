@@ -21,9 +21,7 @@ import { find } from 'lodash';
 const Home = () => {
 	const dispatch = useDispatch();
 	const { forecast } = useSelector(state => state);
-	const { locations, selectedLocationId } = useSelector(state => state.app);
-	const [currentLocation, seCurrentLocation] = useState();
-	const [location, setLocation] = useState(null);
+	const { locations, selectedLocation } = useSelector(state => state.app);
 	const [showModal, setShowModal] = useState(false);
 	const [searchText, setSearchText] = useState('');
 	const [searchResults, setSearchResults] = useState(null);
@@ -35,67 +33,65 @@ const Home = () => {
 		slidesToScroll: 1
 	};
 
-	useEffect(() => {
-		getCurrentLocation()
-	}, []);
+	useEffect(() => getCurrentLocation(), []);
 
+	// useEffect(() => {
+	// 	if (!selectedLocation) return;
 
+	// 	console.log('[HOME] - useEffect- selectedLocation', selectedLocation)
+	// 	dispatch(setCurrentLocation(selectedLocation));
+	// 	// 	setLocation(selectedLocation);
 
-	useEffect(() => {
-		if (!selectedLocationId) return;
-
-		console.log('selectedLocationId',selectedLocationId)
-		dispatch(setCurrentLocation(selectedLocationId));
-		setLocation(selectedLocationId);
-
-	}, [selectedLocationId])
+	// }, [selectedLocation])
 
 	useEffect(() => {
 		if (searchText === '') return;
 
-		searchCity(searchText).then(response => setSearchResults(response))
+		searchCity(searchText).then(searchResult => setSearchResults(searchResult))
 	}, [searchText])
 
-	useEffect(() => {
-		if (!currentLocation) return;
-		// console.log(`currentLocation`, currentLocation)
-		// console.log(`currentLocation.place_id`, currentLocation.place_id)
+	// useEffect(() => {
+	// 	if (!currentGeoLocation) return;
+	// 	if (!selectedLocation) return;
 
-		let findSavedLocation = find(locations, ['place_id', currentLocation.place_id])
-		!findSavedLocation
-			? getLocation(currentLocation).then(response => {
-				// console.log('response :>> ', response.address.city);
-				searchCity(response.address.city).then(response => {
-					setLocationFromSearch(response[0]);
-					dispatch(setCurrentLocation(response[0]))
-				})
-			})
-			: setLocation(findSavedLocation);
+	// 	// console.log(`currentGeoLocation`, currentGeoLocation.latitude)
+	// 	// console.log(`selectedLocation`, selectedLocation.latitude)
 
-	}, [currentLocation])
+	// 	let findSavedLocation = find(locations, ['place_id', selectedLocation.place_id])
+	// 	console.log(`findSavedLocation`, findSavedLocation)
+	// 	!findSavedLocation
+	// 		? getLocationFromCoordinatesAndSetCurrentLocation(currentGeoLocation)
+	// 		: dispatch(setCurrentLocation(findSavedLocation))
+
+	// }, [currentGeoLocation])
 
 	useEffect(() => {
-		if (!location) return;
-		if (forecast[location.place_id]) return;
+		if (!selectedLocation) return;
+		if (forecast[selectedLocation?.place_id]) return;
 
-		// console.log('location :>> ', location);
-		// addCoordinates(location);
-		console.log('location :>> ', location);
-
-		fetchWeather(location).then((response) => {
-			dispatch(saveLocation(location))
+		console.log(`selectedLocation`, selectedLocation)
+		fetchWeather(selectedLocation).then((response) => {
 			dispatch(saveLocationForecastData({
-				location: location.place_id,
+				location: selectedLocation.place_id,
 				forecast: response
 			}))
+			dispatch(saveLocation(selectedLocation))
 		})
-	}, [location])
+	}, [selectedLocation])
+
+	const getLocationFromCoordinatesAndSetCurrentLocation = (locality) => {
+		getLocation(locality).then(response => {
+			searchCity(response.address.city).then(response => {
+				setLocationAsCurrent(response[0])
+			})
+		})
+	}
 
 	const getCurrentLocation = () => {
 		navigator.geolocation.getCurrentPosition(
 			(pos) => {
 				let coordinates = pos.coords;
-				seCurrentLocation(coordinates);
+				getLocationFromCoordinatesAndSetCurrentLocation(coordinates)
 			},
 			(err) => {
 				console.warn(`Error ${err.code}: ${err.message}`);
@@ -108,52 +104,60 @@ const Home = () => {
 		);
 	}
 
-	const renderToday = () => {
-		if (!location) return;
-		if (!forecast[location.place_id]) return;
+	const setLocationFromSearch = (locationCoordinates) => {
+		setLocationAsCurrent(locationCoordinates);
+	}
 
-		return <Today location={location} data={forecast[location.place_id].daily.data[0]} />;
+	const setLocationAsCurrent = (locationProps) => {
+		const { place_id } = locationProps;
+		if (place_id === selectedLocation?.place_id)
+			return;
+
+		addCoordinates(locationProps)
+		dispatch(setCurrentLocation(locationProps))
+	}
+
+
+	const renderToday = () => {
+		if (!selectedLocation) return;
+		if (!forecast[selectedLocation.place_id]) return;
+
+		return <Today location={selectedLocation} data={forecast[selectedLocation.place_id].daily.data[0]} />;
 	};
 	const renderNow = () => {
-		if (!location) return;
-		if (!forecast[location.place_id]) return;
+		if (!selectedLocation) return;
+		if (!forecast[selectedLocation.place_id]) return;
 
 		return <Today
-			location={location}
-			data={forecast[location.place_id].currently}
+			location={selectedLocation}
+			data={forecast[selectedLocation.place_id].currently}
 			summary={{
-				text: forecast[location.place_id].daily.summary,
-				icon: forecast[location.place_id].daily.icon
+				text: forecast[selectedLocation.place_id].daily.summary,
+				icon: forecast[selectedLocation.place_id].daily.icon
 			}}
 		/>;
 	};
 	const renderWeekdays = () => {
-		if (!location) return <Spinner />;
-		if (!forecast[location.place_id]) return <Spinner />;
+		if (!selectedLocation) return <Spinner />;
+		if (!forecast[selectedLocation.place_id]) return <Spinner />;
 
 		return (
-			forecast[location.place_id].daily.data.map((day, i) => {
+			forecast[selectedLocation.place_id].daily.data.map((day, i) => {
 				if (i >= 1)
 					return <Daily key={i} data={day} />;
 			})
 		)
-	}
-
-	const setLocationFromSearch = (locationCoordinates) => {
-		let coordinates = addCoordinates(locationCoordinates);
-		setLocation(coordinates)
-	}
-
+	};
 	const renderCityName = () => {
-		if (!location) return;
+		if (!selectedLocation) return;
 
-		if (location?.address)
-			return <span>{location?.address?.city}</span>
+		if (selectedLocation?.address)
+			return <span>{selectedLocation?.address?.city}</span>
 
-		return <div><p>{location.display_name.split(',')[0]}</p><p className="text-xs font-thin">({location.display_name.split(',')[1]})</p></div>
-	}
+		return <div><p>{selectedLocation.display_name.split(',')[0]}</p><p className="text-xs font-thin">({selectedLocation.display_name.split(',')[1]})</p></div>
+	};
 	const renderMainContent = () => {
-		if (!location) return <Spinner />;
+		if (!selectedLocation) return <Spinner />;
 
 		return (
 			<>
@@ -168,6 +172,21 @@ const Home = () => {
 			</>
 		)
 	}
+
+	const renderSearchModal = () => {
+		if (showModal)
+			return (
+				<Search
+					showModal={showModal}
+					setShowModal={setShowModal}
+					searchText={searchText}
+					setSearchText={setSearchText}
+					searchResults={searchResults}
+					setCurrentLocation={setLocationFromSearch}
+				/>
+			)
+	}
+
 	return (
 		<IonPage>
 			<IonHeader>
@@ -189,14 +208,7 @@ const Home = () => {
 				<Container paddingX={4} marginX="auto">
 					{renderMainContent()}
 				</Container>
-				<Search
-					searchText={searchText}
-					setSearchText={setSearchText}
-					showModal={showModal}
-					setShowModal={setShowModal}
-					searchResults={searchResults}
-					setCurrentLocation={setLocationFromSearch}
-				/>
+				{renderSearchModal()}
 			</Layout>
 		</IonPage>
 	);

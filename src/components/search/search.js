@@ -10,8 +10,8 @@ const Search = ({ showModal, setShowModal, searchText, setSearchText, searchResu
 				return (
 					<IonItem
 						key={city.place_id}
-						button onClick={() => { 
-							console.log('city searched', city) 
+						button onClick={() => {
+							console.log('city searched', city)
 							setCurrentLocation(city)
 						}}
 						detail
@@ -37,10 +37,8 @@ const Search = ({ showModal, setShowModal, searchText, setSearchText, searchResu
 					onIonChange={(e) => setSearchText(e.detail.value)}
 				>
 				</IonSearchbar>
-				<div className="border border-t-1 my-2"></div>
-				<div className="text-gray-700 p-2">
-					{renderResults()}
-				</div>
+				<div className="border border-t-1 my-2" />
+				<div className="text-gray-700 p-2">{renderResults()}</div>
 			</div>
 		</IonModal>
 	)

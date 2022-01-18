@@ -54,3 +54,6 @@ export const searchCity = (city) => {
 	});
 
 } 
+
+
+

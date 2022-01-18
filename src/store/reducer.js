@@ -17,7 +17,7 @@ const app = (state = initialState.app, action) => {
 				locations: [...state.locations, action.payload]
 			};
 		case actionTypes.REMOVE_LOCATION:
-			const newLocations = state.locations.filter(item => item.id !== action.payload)
+			const newLocations = state.locations.filter(item => item.place_id !== action.payload)
 			return {
 				...state,
 				locations: newLocations

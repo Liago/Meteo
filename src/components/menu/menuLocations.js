@@ -1,24 +1,36 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { IonIcon, IonItem, IonLabel } from "@ionic/react";
 import { removeCircle } from "ionicons/icons";
 
-import { removeLocation, removeLocationForecastData } from '../../store/actions'
+import { removeLocation, removeLocationForecastData, setCurrentLocation } from '../../store/actions'
+
+import { last } from 'lodash'
 
 const MenuLocations = ({ locations, selectCity }) => {
 	const dispatch = useDispatch()
+	const { selectedLocationId } = useSelector(state => state.app)
 
 	const removeHandler = (cityId) => {
+		console.log('selectedLocationId', selectedLocationId)
+
+		if (selectedLocationId.place_id === cityId)
+			return;
+
 		dispatch(removeLocation(cityId))
 		dispatch(removeLocationForecastData(cityId))
+
+		console.log('locations :>> ', locations);
+		console.log('last(locations).place_id :>> ', last(locations).place_id);
+		dispatch(setCurrentLocation(last(locations).place_id))
 	}
 
 	return (
 		locations.map(city => (
-			<IonItem 
-			key={city.place_id} 
-			lines="none" 
-			onClick={() => selectCity(city)}
+			<IonItem
+				key={city.place_id}
+				lines="none"
+				onClick={() => selectCity(city)}
 			>
 				<IonIcon
 					slot="start"

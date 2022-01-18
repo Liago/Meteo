@@ -25,6 +25,7 @@ const Home = () => {
 	const [showModal, setShowModal] = useState(false);
 	const [searchText, setSearchText] = useState('');
 	const [searchResults, setSearchResults] = useState(null);
+	const [isLoading, setIsLoading] = useState(false)
 	const slideOptions = {
 		dots: true,
 		infinite: true,
@@ -76,6 +77,7 @@ const Home = () => {
 				forecast: response
 			}))
 			dispatch(saveLocation(selectedLocation))
+			setIsLoading(false)
 		})
 	}, [selectedLocation])
 
@@ -105,6 +107,7 @@ const Home = () => {
 	}
 
 	const setLocationFromSearch = (locationCoordinates) => {
+		dispatch(setCurrentLocation(null))
 		setLocationAsCurrent(locationCoordinates);
 	}
 
@@ -138,8 +141,8 @@ const Home = () => {
 		/>;
 	};
 	const renderWeekdays = () => {
-		if (!selectedLocation) return <Spinner />;
-		if (!forecast[selectedLocation.place_id]) return <Spinner />;
+		if (!selectedLocation) return;
+		if (!forecast[selectedLocation.place_id]) return;
 
 		return (
 			forecast[selectedLocation.place_id].daily.data.map((day, i) => {

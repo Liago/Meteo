@@ -11,11 +11,9 @@ const Search = ({ showModal, setShowModal, searchText, setSearchText, searchResu
 				return (
 					<IonItem
 						key={city.place_id}
-						button onClick={() => {
-							console.log('city searched', city)
-							setCurrentLocation(city)
-						}}
 						detail
+						button 
+						onClick={() => setCurrentLocation(city)}
 					>
 						<IonLabel>{city.display_name}</IonLabel>
 					</IonItem>

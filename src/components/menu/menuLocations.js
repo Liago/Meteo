@@ -1,17 +1,20 @@
 import { useDispatch, useSelector } from "react-redux";
 
-import { IonIcon, IonItem, IonLabel } from "@ionic/react";
+import { IonIcon, IonItem, IonLabel, useIonToast } from "@ionic/react";
 import { removeCircle } from "ionicons/icons";
 
-import { removeLocation, removeLocationForecastData} from '../../store/actions'
+import { removeLocation, removeLocationForecastData } from '../../store/actions'
 
 const MenuLocations = ({ locations, selectCity }) => {
-	const dispatch = useDispatch()
-	const { selectedLocationId } = useSelector(state => state.app)
+	const dispatch = useDispatch();
+	const { selectedLocation } = useSelector(state => state.app);
+	const [showAlert] = useIonToast();
 
 	const removeHandler = (cityId) => {
-		if (selectedLocationId.place_id === cityId)
+		if (selectedLocation.place_id === cityId) {
+			showAlert({ message: 'Non puoi rimuovere la località attiva in questo momento', duration: 1500 });
 			return;
+		}
 
 		dispatch(removeLocation(cityId))
 		dispatch(removeLocationForecastData(cityId))
@@ -28,7 +31,10 @@ const MenuLocations = ({ locations, selectCity }) => {
 					slot="start"
 					color="danger"
 					icon={removeCircle}
-					onClick={() => removeHandler(city.place_id)}
+					onClick={(e) => {
+						e.stopPropagation();
+						removeHandler(city.place_id);
+					}}
 				/>
 				<IonLabel>{city.display_name}</IonLabel>
 			</IonItem>

@@ -35,35 +35,11 @@ const Home = () => {
 
 	useEffect(() => getCurrentLocation(), []);
 
-	// useEffect(() => {
-	// 	if (!selectedLocation) return;
-
-	// 	console.log('[HOME] - useEffect- selectedLocation', selectedLocation)
-	// 	dispatch(setCurrentLocation(selectedLocation));
-	// 	// 	setLocation(selectedLocation);
-
-	// }, [selectedLocation])
-
 	useEffect(() => {
 		if (searchText === '') return;
 
 		searchCity(searchText).then(searchResult => setSearchResults(searchResult))
 	}, [searchText])
-
-	// useEffect(() => {
-	// 	if (!currentGeoLocation) return;
-	// 	if (!selectedLocation) return;
-
-	// 	// console.log(`currentGeoLocation`, currentGeoLocation.latitude)
-	// 	// console.log(`selectedLocation`, selectedLocation.latitude)
-
-	// 	let findSavedLocation = find(locations, ['place_id', selectedLocation.place_id])
-	// 	console.log(`findSavedLocation`, findSavedLocation)
-	// 	!findSavedLocation
-	// 		? getLocationFromCoordinatesAndSetCurrentLocation(currentGeoLocation)
-	// 		: dispatch(setCurrentLocation(findSavedLocation))
-
-	// }, [currentGeoLocation])
 
 	useEffect(() => {
 		if (!selectedLocation) return;
@@ -116,6 +92,33 @@ const Home = () => {
 		addCoordinates(locationProps)
 		dispatch(setCurrentLocation(locationProps))
 	}
+
+
+	// useEffect(() => {
+	// 	if (!selectedLocation) return;
+
+	// 	console.log('[HOME] - useEffect- selectedLocation', selectedLocation)
+	// 	dispatch(setCurrentLocation(selectedLocation));
+	// 	// 	setLocation(selectedLocation);
+
+	// }, [selectedLocation])
+
+
+	// useEffect(() => {
+	// 	if (!currentGeoLocation) return;
+	// 	if (!selectedLocation) return;
+
+	// 	// console.log(`currentGeoLocation`, currentGeoLocation.latitude)
+	// 	// console.log(`selectedLocation`, selectedLocation.latitude)
+
+	// 	let findSavedLocation = find(locations, ['place_id', selectedLocation.place_id])
+	// 	console.log(`findSavedLocation`, findSavedLocation)
+	// 	!findSavedLocation
+	// 		? getLocationFromCoordinatesAndSetCurrentLocation(currentGeoLocation)
+	// 		: dispatch(setCurrentLocation(findSavedLocation))
+
+	// }, [currentGeoLocation])
+
 
 
 	const renderToday = () => {

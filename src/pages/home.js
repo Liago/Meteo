@@ -16,8 +16,6 @@ import { fetchWeather, getLocation, searchCity } from "../rest/rest";
 
 import Slider from "react-slick";
 
-import { find } from 'lodash';
-
 const Home = () => {
 	const dispatch = useDispatch();
 	const { forecast } = useSelector(state => state);
@@ -25,7 +23,6 @@ const Home = () => {
 	const [showModal, setShowModal] = useState(false);
 	const [searchText, setSearchText] = useState('');
 	const [searchResults, setSearchResults] = useState(null);
-	const [isLoading, setIsLoading] = useState(false)
 	const slideOptions = {
 		dots: true,
 		infinite: true,
@@ -53,7 +50,6 @@ const Home = () => {
 				forecast: response
 			}))
 			dispatch(saveLocation(selectedLocation))
-			setIsLoading(false)
 		})
 	}, [selectedLocation])
 
@@ -95,34 +91,6 @@ const Home = () => {
 		addCoordinates(locationProps)
 		dispatch(setCurrentLocation(locationProps))
 	}
-
-
-	// useEffect(() => {
-	// 	if (!selectedLocation) return;
-
-	// 	console.log('[HOME] - useEffect- selectedLocation', selectedLocation)
-	// 	dispatch(setCurrentLocation(selectedLocation));
-	// 	// 	setLocation(selectedLocation);
-
-	// }, [selectedLocation])
-
-
-	// useEffect(() => {
-	// 	if (!currentGeoLocation) return;
-	// 	if (!selectedLocation) return;
-
-	// 	// console.log(`currentGeoLocation`, currentGeoLocation.latitude)
-	// 	// console.log(`selectedLocation`, selectedLocation.latitude)
-
-	// 	let findSavedLocation = find(locations, ['place_id', selectedLocation.place_id])
-	// 	console.log(`findSavedLocation`, findSavedLocation)
-	// 	!findSavedLocation
-	// 		? getLocationFromCoordinatesAndSetCurrentLocation(currentGeoLocation)
-	// 		: dispatch(setCurrentLocation(findSavedLocation))
-
-	// }, [currentGeoLocation])
-
-
 
 	const renderToday = () => {
 		if (!selectedLocation) return;

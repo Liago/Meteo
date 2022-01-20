@@ -131,7 +131,8 @@ const Home = () => {
 		return <div><p>{selectedLocation.display_name.split(',')[0]}</p><p className="text-xs font-thin">({selectedLocation.display_name.split(',')[1]})</p></div>
 	};
 	const renderMainContent = () => {
-		if (!selectedLocation) return <Spinner />;
+		if (!selectedLocation || !forecast[selectedLocation.place_id]) return <Spinner />;
+
 
 		return (
 			<>
@@ -166,7 +167,9 @@ const Home = () => {
 			</IonHeader>
 			<Layout>
 				<Container paddingX={4} marginX="auto">
-					{renderMainContent()}
+					<div>
+						{renderMainContent()}
+					</div>
 					<Search
 						showModal={showModal}
 						setShowModal={setShowModal}

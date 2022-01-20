@@ -1,18 +1,18 @@
-import { getDataFormatted, getWeatherIcon } from "../../utils/utils";
-import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/react/outline'
-import { round } from 'lodash'
 import { IonAccordion, IonAccordionGroup, IonItem, IonLabel, IonList } from "@ionic/react";
-import { arrowDownCircle, informationCircleOutline } from "ionicons/icons";
-import { useRef } from "react";
+import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/react/outline'
+
+import WeatherIcon from "components/UI/weatherIcon";
+import DetailsInfo from "./detailsInfo";
+
+import { getDataFormatted, getPercent, getTemp } from "../../utils/utils";
 
 const Daily = ({ data }) => {
-	const accordionGroupRef = useRef(null);
 
 	const renderRainChance = () => {
 		if (data.icon === 'clear-day' || data.precipProbability === 0)
 			return;
 
-		return <div className="font-light">{round(data.precipProbability * 100)}%</div>
+		return <div className="font-light">{getPercent(data.precipProbability)}</div>
 	}
 
 	return (
@@ -26,12 +26,18 @@ const Daily = ({ data }) => {
 					<div className="col-span-5 text-base font-light">
 						<p>{data.summary}</p>
 						<div className="font-normal flex">
-							<div className="text-red-500 pr-2 flex items-center">{round(data.temperatureHigh)}° <ArrowUpIcon className="h-3 w-3 text-red-500" /></div>
-							<div className="text-blue-500 flex items-center">{round(data.temperatureLow)}° <ArrowDownIcon className="h-3 w-3 text-blue-500" /></div>
+							<div className="text-red-500 pr-2 flex items-center">
+								{getTemp(data.temperatureHigh)}
+								<ArrowUpIcon className="h-3 w-3 text-red-500" />
+							</div>
+							<div className="text-blue-500 flex items-center">
+								{getTemp(data.temperatureLow)}
+								<ArrowDownIcon className="h-3 w-3 text-blue-500" />
+							</div>
 						</div>
 					</div>
 					<div className="text-center text-sm">
-						<i className={`wi wi-${getWeatherIcon(data.icon)}`} />
+						<WeatherIcon icon={data.icon} />
 						{renderRainChance()}
 					</div>
 				</div>
@@ -40,7 +46,7 @@ const Daily = ({ data }) => {
 						<IonItem slot="header"></IonItem>
 						<IonList slot="content">
 							<IonItem>
-								<IonLabel>Red</IonLabel>
+								<DetailsInfo data={data} />
 							</IonItem>
 							<IonItem>
 								<IonLabel>Green</IonLabel>

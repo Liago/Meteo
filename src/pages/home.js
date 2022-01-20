@@ -96,14 +96,13 @@ const Home = () => {
 		if (!selectedLocation) return;
 		if (!forecast[selectedLocation.place_id]) return;
 
-		return <Today location={selectedLocation} data={forecast[selectedLocation.place_id].daily.data[0]} />;
+		return <Today data={forecast[selectedLocation.place_id].daily.data[0]} />;
 	};
 	const renderNow = () => {
 		if (!selectedLocation) return;
 		if (!forecast[selectedLocation.place_id]) return;
 
 		return <Today
-			location={selectedLocation}
 			data={forecast[selectedLocation.place_id].currently}
 			summary={{
 				text: forecast[selectedLocation.place_id].daily.summary,

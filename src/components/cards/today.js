@@ -2,6 +2,7 @@ import WeatherIcon from "components/UI/weatherIcon";
 
 import { getDataFormatted, getPercent, getTemp } from "../../utils/utils";
 import { round } from 'lodash'
+import SunriseContainer from "components/forecast/sunrise";
 
 const Today = ({ data, summary }) => {
 	const renderTemperature = () => {
@@ -18,18 +19,7 @@ const Today = ({ data, summary }) => {
 	const renderSunriseTime = () => {
 		if (!data.sunriseTime) return;
 
-		return (
-			<>
-				<div className="flex items-center text-gray-700">
-					<WeatherIcon className='text-gray-500' icon='sunrise' />
-					{getDataFormatted(data.sunriseTime, 'HH:mm')}
-				</div>
-				<div className="flex items-center text-gray-700 px-1">
-					<WeatherIcon className='text-gray-500' icon='sunset' />
-					{getDataFormatted(data.sunsetTime, 'HH:mm')}
-				</div>
-			</>
-		)
+		return <SunriseContainer data={data} />
 	}
 	const renderCardHeader = () => {
 		if (data.sunriseTime)

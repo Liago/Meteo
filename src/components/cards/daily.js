@@ -1,8 +1,20 @@
 import { getDataFormatted, getWeatherIcon } from "../../utils/utils";
 import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/react/outline'
 import { round } from 'lodash'
+import { IonAccordion, IonAccordionGroup, IonItem, IonLabel, IonList } from "@ionic/react";
+import { arrowDownCircle, informationCircleOutline } from "ionicons/icons";
+import { useRef } from "react";
 
 const Daily = ({ data }) => {
+	const accordionGroupRef = useRef(null);
+
+	const renderRainChance = () => {
+		if (data.icon === 'clear-day' || data.precipProbability === 0)
+			return;
+
+		return <div className="font-light">{round(data.precipProbability * 100)}%</div>
+	}
+
 	return (
 		<div className="bg-white shadow-md rounded-lg w-full mx-auto my-3 pt-3">
 			<div className="px-4 py-5">
@@ -20,9 +32,25 @@ const Daily = ({ data }) => {
 					</div>
 					<div className="text-center text-sm">
 						<i className={`wi wi-${getWeatherIcon(data.icon)}`} />
-						<div className="font-light">{round(data.precipProbability * 100)}%</div>
+						{renderRainChance()}
 					</div>
 				</div>
+				<IonAccordionGroup>
+					<IonAccordion value="forecast">
+						<IonItem slot="header"></IonItem>
+						<IonList slot="content">
+							<IonItem>
+								<IonLabel>Red</IonLabel>
+							</IonItem>
+							<IonItem>
+								<IonLabel>Green</IonLabel>
+							</IonItem>
+							<IonItem>
+								<IonLabel>Blue</IonLabel>
+							</IonItem>
+						</IonList>
+					</IonAccordion>
+				</IonAccordionGroup>
 			</div>
 		</div>
 	);

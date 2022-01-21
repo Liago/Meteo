@@ -3,6 +3,7 @@ import { round } from 'lodash';
 import WeatherIcon from "components/UI/weatherIcon";
 import SunriseContainer from "components/forecast/sunrise";
 import { CardContainer } from "components/UI/cardContainer";
+import MiniCardInfo from "components/UI/miniCard";
 
 const DetailsInfo = ({ data }) => {
 	return (
@@ -17,56 +18,24 @@ const DetailsInfo = ({ data }) => {
 						<SunriseContainer data={data} />
 					</div>
 				</div>
-				<div className="text-xs font-medium">
-					<div className="flex justify-between">
-						<span>Max temp.</span>
-						<span>{getTemp(data.apparentTemperatureHigh)}</span>
-					</div>
-					<div className="flex justify-between">
-						<span>Max temp. perc.</span>
-						<span>{getTemp(data.temperatureHigh)}</span>
-					</div>
-					<div className="flex justify-between">
-						<span>Max temp. time</span>
-						<span>{getDataFormatted(data.apparentTemperatureHighTime, 'HH:mm')}</span>
-					</div>
-					<div className="flex justify-between">
-						<span>Min temp.</span>
-						<span>{getTemp(data.apparentTemperatureMin)}</span>
-					</div>
-					<div className="flex justify-between">
-						<span>Min temp. perc.</span>
-						<span>{getTemp(data.temperatureMin)}</span>
-					</div>
-					<div className="flex justify-between">
-						<span>Min temp. time</span>
-						<span>{getDataFormatted(data.apparentTemperatureMinTime, 'HH:mm')}</span>
-					</div>
-					<div className="border border-t-1 my-2" />
-					<div className="flex justify-between">
-						<span>Umidità</span>
-						<span>{getPercent(data.humidity)}</span>
-					</div>
-					<div className="flex justify-between">
-						<span>Visibilità</span>
-						<span>{round(data.visibility)}Km</span>
-					</div>
-					<div className="flex justify-between">
-						<span>UV Index</span>
-						<span>{data.uvIndex}</span>
-					</div>
-					<div className="flex justify-between">
-						<span>UV Index Time</span>
-						<span>{getDataFormatted(data.uvIndexTime, 'HH:mm')}</span>
-					</div>
-					<div className="flex justify-between">
-						<span>Punto di rugiada</span>
-						<span>{getTemp(data.dewPoint)}</span>
-					</div>
-				</div>
 			</div>
+			<div className="grid grid-cols-3 gap-3 text-xs font-medium">
+				<MiniCardInfo icon='thermometer' label='Max temp.' value={getTemp(data.temperatureHigh)} />
+				<MiniCardInfo icon='thermometer' label='Percepita' value={getTemp(data.apparentTemperatureHigh)} />
+				<MiniCardInfo icon='thermometer' label='Alle ore' value={getDataFormatted(data.apparentTemperatureHighTime, 'HH:mm')} />
+				<MiniCardInfo icon='thermometer-exterior' label='Min temp.' value={getTemp(data.temperatureMin)} />
+				<MiniCardInfo icon='thermometer-exterior' label='Percepita' value={getTemp(data.apparentTemperatureMin)} />
+				<MiniCardInfo icon='thermometer-exterior' label='Alle ore' value={getDataFormatted(data.apparentTemperatureMinTime, 'HH:mm')} />
+			</div>
+			<div className="border border-t-1 my-2" />
+			<div className='grid grid-cols-3 gap-3 text-xs font-medium'>
+				<MiniCardInfo icon='humidity' label='Umidità' value={getPercent(data.humidity)} />
+				<MiniCardInfo icon='humidity' label='Visibilità' value={round(data.visibility)} unit='Km' />
+				<MiniCardInfo icon='day-sunny' label='Indice UV' value={data.uvIndex} unit='UV' />
+				<MiniCardInfo icon='day-sunny' label='IUV Time' value={getDataFormatted(data.uvIndexTime, 'HH:mm')} />
+				<MiniCardInfo icon='raindrop' label='Rugiada' value={getTemp(data.dewPoint)} />
+			</div>		
 		</CardContainer>
-
 	)
 }
 export default DetailsInfo;

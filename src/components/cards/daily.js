@@ -52,9 +52,6 @@ const Daily = ({ data }) => {
 						<IonItem>
 							<SunAndWind data={data} />
 						</IonItem>
-						<IonItem>
-							<IonLabel>Blue</IonLabel>
-						</IonItem>
 					</IonList>
 				</IonAccordion>
 			</IonAccordionGroup>

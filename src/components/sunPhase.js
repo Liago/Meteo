@@ -1,12 +1,11 @@
 import { useState } from 'react';
 import { IonIcon, IonItem, IonRange } from '@ionic/react';
-
-import moment from 'moment';
-import { getDataFormatted, getPercent } from 'utils/utils';
 import { moon, sunny } from 'ionicons/icons';
-import WeatherIcon from './UI/weatherIcon';
-import { MiniCardContainer } from './UI/cardContainer';
+
 import MiniCardInfo from './UI/miniCard';
+
+import { getDataFormatted, getPercent } from 'utils/utils';
+import moment from 'moment';
 
 
 const SunPhase = ({ sunriseTime, sunsetTime, windSpeed, pressure, cloudCover, ozone, windGust, moonPhase }) => {

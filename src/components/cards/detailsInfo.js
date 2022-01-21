@@ -2,7 +2,7 @@ import { getPercent, getTemp, getDataFormatted } from "utils/utils";
 import { round } from 'lodash';
 import WeatherIcon from "components/UI/weatherIcon";
 import SunriseContainer from "components/forecast/sunrise";
-import CardContainer from "components/UI/cardContainer";
+import { CardContainer } from "components/UI/cardContainer";
 
 const DetailsInfo = ({ data }) => {
 	return (
@@ -10,14 +10,14 @@ const DetailsInfo = ({ data }) => {
 			<div>
 				<p className="text-md font-medium">Dettagli</p>
 			</div>
-			<div className="grid grid-cols-2 pt-6 pb-2">
+			<div className="pt-6 pb-2">
 				<div className="text-center">
 					<WeatherIcon className='text-7xl' icon={data.icon} />
-					<div className="flex justify-center text-xs font-light pt-8">
+					<div className="flex justify-center text-xs font-medium pt-8">
 						<SunriseContainer data={data} />
 					</div>
 				</div>
-				<div className="text-xs font-light">
+				<div className="text-xs font-medium">
 					<div className="flex justify-between">
 						<span>Max temp.</span>
 						<span>{getTemp(data.apparentTemperatureHigh)}</span>

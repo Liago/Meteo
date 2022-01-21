@@ -5,7 +5,8 @@ import WeatherIcon from "components/UI/weatherIcon";
 import DetailsInfo from "./detailsInfo";
 
 import { getDataFormatted, getPercent, getTemp } from "../../utils/utils";
-import CardContainer from "components/UI/cardContainer";
+import { CardContainer } from "components/UI/cardContainer";
+import SunAndWind from "components/sunWind";
 
 const Daily = ({ data }) => {
 
@@ -49,7 +50,7 @@ const Daily = ({ data }) => {
 							<DetailsInfo data={data} />
 						</IonItem>
 						<IonItem>
-							<IonLabel>Green</IonLabel>
+							<SunAndWind data={data} />
 						</IonItem>
 						<IonItem>
 							<IonLabel>Blue</IonLabel>

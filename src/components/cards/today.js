@@ -67,7 +67,7 @@ const Today = ({ data, summary }) => {
 							<span className="px-1">{getPercent(data.cloudCover)}</span>
 						</div>
 						<div className="flex items-center text-gray-700 pl-1">
-							<WeatherIcon icon='strong-wind' />
+							<WeatherIcon icon='windy' />
 							<span className="px-1">{round(data.windSpeed, 1)}m/s</span>
 						</div>
 						<div className="flex items-center text-gray-700 pl-1">

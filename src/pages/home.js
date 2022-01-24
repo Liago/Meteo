@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { IonButton, IonButtons, IonHeader, IonIcon, IonMenuButton, IonPage, IonTitle, IonToolbar } from "@ionic/react";
-import { search } from "ionicons/icons";
+import { IonPage } from "@ionic/react";
 
 import Layout from "../components/layout";
 import Today from "../components/cards/today";
@@ -15,6 +14,7 @@ import { saveLocation, saveLocationForecastData, setCurrentLocation } from "../s
 import { fetchWeather, getLocation, searchCity } from "../rest/rest";
 
 import Slider from "react-slick";
+import HeaderToolbar from "components/header/headerToolbar";
 
 const Home = () => {
 	const dispatch = useDispatch();
@@ -43,14 +43,7 @@ const Home = () => {
 		if (!selectedLocation) return;
 		if (forecast[selectedLocation?.place_id]) return;
 
-		console.log(`selectedLocation`, selectedLocation)
-		fetchWeather(selectedLocation).then((response) => {
-			dispatch(saveLocationForecastData({
-				location: selectedLocation.place_id,
-				forecast: response
-			}))
-			dispatch(saveLocation(selectedLocation))
-		})
+		fetchForecast(selectedLocation, false);
 	}, [selectedLocation])
 
 	const getLocationFromCoordinatesAndSetCurrentLocation = (locality) => {
@@ -58,6 +51,16 @@ const Home = () => {
 			searchCity(response.address.city).then(response => {
 				setLocationAsCurrent(response[0])
 			})
+		})
+	}
+
+	const fetchForecast = (thisLocation, refresh) => {
+		fetchWeather(thisLocation).then((response) => {
+			dispatch(saveLocationForecastData({
+				location: thisLocation.place_id,
+				forecast: response
+			}))
+			!refresh && dispatch(saveLocation(thisLocation))
 		})
 	}
 
@@ -82,7 +85,9 @@ const Home = () => {
 		dispatch(setCurrentLocation(null))
 		setLocationAsCurrent(locationCoordinates);
 	}
-
+	const refreshForecast = () => {
+		fetchForecast(selectedLocation, true);
+	}
 	const setLocationAsCurrent = (locationProps) => {
 		const { place_id } = locationProps;
 		if (place_id === selectedLocation?.place_id)
@@ -149,21 +154,12 @@ const Home = () => {
 
 	return (
 		<IonPage>
-			<IonHeader>
-				<IonToolbar>
-					<IonButtons slot="start">
-						<IonMenuButton />
-					</IonButtons>
-					<IonTitle>{renderCityName()}</IonTitle>
-					<IonButtons slot="primary">
-						<IonButton
-							onClick={() => setShowModal(!showModal)}
-						>
-							<IonIcon slot="icon-only" icon={search} />
-						</IonButton>
-					</IonButtons>
-				</IonToolbar>
-			</IonHeader>
+			<HeaderToolbar
+				renderCityName={renderCityName}
+				refreshForecast={refreshForecast}
+				setShowModal={setShowModal}
+				showModal={showModal}
+			/>
 			<Layout>
 				<Container paddingX={4} marginX="auto">
 					<div>

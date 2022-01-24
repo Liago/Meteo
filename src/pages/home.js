@@ -9,13 +9,14 @@ import Search from "../components/search/search";
 import Container from '../components/UI/container';
 import Spinner from "components/UI/spinner";
 
-import { addCoordinates, getDataFormatted, itsTimeToRefresh } from "utils/utils";
+import { addCoordinates, itsTimeToRefresh } from "utils/utils";
 import { saveLocation, saveLocationForecastData, setCurrentLocation } from "../store/actions";
 import { fetchWeather, getLocation, searchCity } from "../rest/rest";
 
 import Slider from "react-slick";
 import HeaderToolbar from "components/header/headerToolbar";
-import moment from "moment";
+import { Geolocation } from '@ionic-native/geolocation';
+
 
 const Home = () => {
 	const dispatch = useDispatch();
@@ -31,7 +32,6 @@ const Home = () => {
 		slidesToShow: 1,
 		slidesToScroll: 1
 	};
-
 	useEffect(() => {
 		getCurrentLocation();
 		checkForecastDifference();
@@ -75,21 +75,14 @@ const Home = () => {
 		})
 	}
 
-	const getCurrentLocation = () => {
-		navigator.geolocation.getCurrentPosition(
-			(pos) => {
-				let coordinates = pos.coords;
-				getLocationFromCoordinatesAndSetCurrentLocation(coordinates)
-			},
-			(err) => {
-				console.warn(`Error ${err.code}: ${err.message}`);
-			},
-			{
-				enableHighAccuracy: true,
-				timeout: 5000,
-				maximumAge: 0,
-			}
-		);
+	const getCurrentLocation = async () => {
+		try {
+			const position = await Geolocation.getCurrentPosition();
+			const { coords: coordinates } = position;
+			getLocationFromCoordinatesAndSetCurrentLocation(coordinates)
+		} catch (e) {
+			console.log('error :>> ', e);
+		}
 	}
 
 	const setLocationFromSearch = (locationCoordinates) => {

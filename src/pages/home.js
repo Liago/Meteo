@@ -9,17 +9,18 @@ import Search from "../components/search/search";
 import Container from '../components/UI/container';
 import Spinner from "components/UI/spinner";
 
-import { addCoordinates } from "utils/utils";
+import { addCoordinates, getDataFormatted, itsTimeToRefresh } from "utils/utils";
 import { saveLocation, saveLocationForecastData, setCurrentLocation } from "../store/actions";
 import { fetchWeather, getLocation, searchCity } from "../rest/rest";
 
 import Slider from "react-slick";
 import HeaderToolbar from "components/header/headerToolbar";
+import moment from "moment";
 
 const Home = () => {
 	const dispatch = useDispatch();
 	const { forecast } = useSelector(state => state);
-	const { locations, selectedLocation } = useSelector(state => state.app);
+	const { selectedLocation } = useSelector(state => state.app);
 	const [showModal, setShowModal] = useState(false);
 	const [searchText, setSearchText] = useState('');
 	const [searchResults, setSearchResults] = useState(null);
@@ -31,7 +32,10 @@ const Home = () => {
 		slidesToScroll: 1
 	};
 
-	useEffect(() => getCurrentLocation(), []);
+	useEffect(() => {
+		getCurrentLocation();
+		checkForecastDifference();
+	}, []);
 
 	useEffect(() => {
 		if (searchText === '') return;
@@ -40,11 +44,18 @@ const Home = () => {
 	}, [searchText])
 
 	useEffect(() => {
+		checkForecastDifference();
 		if (!selectedLocation) return;
 		if (forecast[selectedLocation?.place_id]) return;
 
 		fetchForecast(selectedLocation, false);
 	}, [selectedLocation])
+
+	const checkForecastDifference = () => {
+		if (!forecast[selectedLocation?.place_id]) return;
+
+		itsTimeToRefresh(forecast, selectedLocation) && fetchForecast(selectedLocation, true)
+	}
 
 	const getLocationFromCoordinatesAndSetCurrentLocation = (locality) => {
 		getLocation(locality).then(response => {

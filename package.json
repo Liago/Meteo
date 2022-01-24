@@ -26,6 +26,7 @@
     "@types/react-router-dom": "^5.1.7",
     "axios": "^0.24.0",
     "connected-react-router": "^6.9.2",
+    "cordova-plugin-geolocation": "^4.1.0",
     "ionicons": "^5.4.0",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",

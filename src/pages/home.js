@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { IonButton, IonButtons, IonHeader, IonIcon, IonMenuButton, IonPage, IonTitle, IonToolbar } from "@ionic/react";
-import { search } from "ionicons/icons";
+import { IonPage } from "@ionic/react";
 
 import Layout from "../components/layout";
 import Today from "../components/cards/today";
@@ -10,16 +9,18 @@ import Search from "../components/search/search";
 import Container from '../components/UI/container';
 import Spinner from "components/UI/spinner";
 
-import { addCoordinates } from "utils/utils";
+import { addCoordinates, getDataFormatted, itsTimeToRefresh } from "utils/utils";
 import { saveLocation, saveLocationForecastData, setCurrentLocation } from "../store/actions";
 import { fetchWeather, getLocation, searchCity } from "../rest/rest";
 
 import Slider from "react-slick";
+import HeaderToolbar from "components/header/headerToolbar";
+import moment from "moment";
 
 const Home = () => {
 	const dispatch = useDispatch();
 	const { forecast } = useSelector(state => state);
-	const { locations, selectedLocation } = useSelector(state => state.app);
+	const { selectedLocation } = useSelector(state => state.app);
 	const [showModal, setShowModal] = useState(false);
 	const [searchText, setSearchText] = useState('');
 	const [searchResults, setSearchResults] = useState(null);
@@ -31,7 +32,10 @@ const Home = () => {
 		slidesToScroll: 1
 	};
 
-	useEffect(() => getCurrentLocation(), []);
+	useEffect(() => {
+		getCurrentLocation();
+		checkForecastDifference();
+	}, []);
 
 	useEffect(() => {
 		if (searchText === '') return;
@@ -40,24 +44,34 @@ const Home = () => {
 	}, [searchText])
 
 	useEffect(() => {
+		checkForecastDifference();
 		if (!selectedLocation) return;
 		if (forecast[selectedLocation?.place_id]) return;
 
-		console.log(`selectedLocation`, selectedLocation)
-		fetchWeather(selectedLocation).then((response) => {
-			dispatch(saveLocationForecastData({
-				location: selectedLocation.place_id,
-				forecast: response
-			}))
-			dispatch(saveLocation(selectedLocation))
-		})
+		fetchForecast(selectedLocation, false);
 	}, [selectedLocation])
+
+	const checkForecastDifference = () => {
+		if (!forecast[selectedLocation?.place_id]) return;
+
+		itsTimeToRefresh(forecast, selectedLocation) && fetchForecast(selectedLocation, true)
+	}
 
 	const getLocationFromCoordinatesAndSetCurrentLocation = (locality) => {
 		getLocation(locality).then(response => {
 			searchCity(response.address.city).then(response => {
 				setLocationAsCurrent(response[0])
 			})
+		})
+	}
+
+	const fetchForecast = (thisLocation, refresh) => {
+		fetchWeather(thisLocation).then((response) => {
+			dispatch(saveLocationForecastData({
+				location: thisLocation.place_id,
+				forecast: response
+			}))
+			!refresh && dispatch(saveLocation(thisLocation))
 		})
 	}
 
@@ -82,7 +96,9 @@ const Home = () => {
 		dispatch(setCurrentLocation(null))
 		setLocationAsCurrent(locationCoordinates);
 	}
-
+	const refreshForecast = () => {
+		fetchForecast(selectedLocation, true);
+	}
 	const setLocationAsCurrent = (locationProps) => {
 		const { place_id } = locationProps;
 		if (place_id === selectedLocation?.place_id)
@@ -96,14 +112,13 @@ const Home = () => {
 		if (!selectedLocation) return;
 		if (!forecast[selectedLocation.place_id]) return;
 
-		return <Today location={selectedLocation} data={forecast[selectedLocation.place_id].daily.data[0]} />;
+		return <Today data={forecast[selectedLocation.place_id].daily.data[0]} />;
 	};
 	const renderNow = () => {
 		if (!selectedLocation) return;
 		if (!forecast[selectedLocation.place_id]) return;
 
 		return <Today
-			location={selectedLocation}
 			data={forecast[selectedLocation.place_id].currently}
 			summary={{
 				text: forecast[selectedLocation.place_id].daily.summary,
@@ -131,7 +146,8 @@ const Home = () => {
 		return <div><p>{selectedLocation.display_name.split(',')[0]}</p><p className="text-xs font-thin">({selectedLocation.display_name.split(',')[1]})</p></div>
 	};
 	const renderMainContent = () => {
-		if (!selectedLocation) return <Spinner />;
+		if (!selectedLocation || !forecast[selectedLocation.place_id]) return <Spinner />;
+
 
 		return (
 			<>
@@ -149,24 +165,17 @@ const Home = () => {
 
 	return (
 		<IonPage>
-			<IonHeader>
-				<IonToolbar>
-					<IonButtons slot="start">
-						<IonMenuButton />
-					</IonButtons>
-					<IonTitle>{renderCityName()}</IonTitle>
-					<IonButtons slot="primary">
-						<IonButton
-							onClick={() => setShowModal(!showModal)}
-						>
-							<IonIcon slot="icon-only" icon={search} />
-						</IonButton>
-					</IonButtons>
-				</IonToolbar>
-			</IonHeader>
+			<HeaderToolbar
+				renderCityName={renderCityName}
+				refreshForecast={refreshForecast}
+				setShowModal={setShowModal}
+				showModal={showModal}
+			/>
 			<Layout>
 				<Container paddingX={4} marginX="auto">
-					{renderMainContent()}
+					<div>
+						{renderMainContent()}
+					</div>
 					<Search
 						showModal={showModal}
 						setShowModal={setShowModal}

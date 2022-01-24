@@ -6,7 +6,7 @@ export const fetchWeather = ({ latitude, longitude }) => {
 	var options = {
 		method: 'GET',
 		url: `https://dark-sky.p.rapidapi.com/${latitude},${longitude}`,
-		params: { units: 'auto', lang: 'it' },
+		params: { units: 'si', lang: 'it' },
 		headers: {
 			'x-rapidapi-host': HOST,
 			'x-rapidapi-key': KEY

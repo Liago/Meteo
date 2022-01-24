@@ -1,0 +1,6 @@
+{
+	"appId": "io.ionic.starter",
+	"appName": "Meteo",
+	"webDir": "build",
+	"bundledWebRuntime": false
+}

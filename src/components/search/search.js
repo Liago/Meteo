@@ -12,7 +12,7 @@ const Search = ({ showModal, setShowModal, searchText, setSearchText, searchResu
 					<IonItem
 						key={city.place_id}
 						detail
-						button 
+						button
 						onClick={() => setCurrentLocation(city)}
 					>
 						<IonLabel>{city.display_name}</IonLabel>
@@ -31,6 +31,7 @@ const Search = ({ showModal, setShowModal, searchText, setSearchText, searchResu
 		>
 			<div className="text-gray-700 px-4" >
 				<IonSearchbar
+					animated
 					value={searchText}
 					placeholder="Cerca una città"
 					debounce={1000}

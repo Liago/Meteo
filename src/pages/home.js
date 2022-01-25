@@ -86,7 +86,8 @@ const Home = () => {
 	}
 
 	const setLocationFromSearch = (locationCoordinates) => {
-		dispatch(setCurrentLocation(null))
+		setShowModal(false);
+		dispatch(setCurrentLocation(null));
 		setLocationAsCurrent(locationCoordinates);
 	}
 	const refreshForecast = () => {

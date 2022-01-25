@@ -5,6 +5,7 @@ const initialState = {
 		darkMode: false,
 		locations: [],
 		selectedLocation: null,
+		autoUpdates: false
 	},
 	forecast: []
 };
@@ -28,7 +29,12 @@ const app = (state = initialState.app, action) => {
 				selectedLocation: action.payload
 			}
 		case actionTypes.RESET_STORE:
-			return initialState
+			return initialState.app
+		case actionTypes.AUTOMATIC_UPDATES:
+			return {
+				...state,
+				autoUpdates: action.payload
+			}	
 		default:
 			return state;
 	}
@@ -51,7 +57,7 @@ const forecast = (state = initialState.forecast, action) => {
 			return newForecasts
 
 		case actionTypes.RESET_STORE:
-			return initialState
+			return initialState.forecast
 			
 		default:
 			return state;

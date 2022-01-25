@@ -21,7 +21,7 @@ import { Geolocation } from '@ionic-native/geolocation';
 const Home = () => {
 	const dispatch = useDispatch();
 	const { forecast } = useSelector(state => state);
-	const { selectedLocation } = useSelector(state => state.app);
+	const { selectedLocation, autoUpdates } = useSelector(state => state.app);
 	const [showModal, setShowModal] = useState(false);
 	const [searchText, setSearchText] = useState('');
 	const [searchResults, setSearchResults] = useState(null);
@@ -44,7 +44,7 @@ const Home = () => {
 	}, [searchText])
 
 	useEffect(() => {
-		checkForecastDifference();
+		autoUpdates && checkForecastDifference();
 		if (!selectedLocation) return;
 		if (forecast[selectedLocation?.place_id]) return;
 
@@ -90,7 +90,9 @@ const Home = () => {
 		setLocationAsCurrent(locationCoordinates);
 	}
 	const refreshForecast = () => {
-		fetchForecast(selectedLocation, true);
+		!selectedLocation
+			? getCurrentLocation()
+			: fetchForecast(selectedLocation, true);
 	}
 	const setLocationAsCurrent = (locationProps) => {
 		const { place_id } = locationProps;

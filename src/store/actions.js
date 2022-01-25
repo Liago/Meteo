@@ -37,3 +37,9 @@ export const resetStore = () => {
 		type: actionTypes.RESET_STORE,
 	}
 }
+export const automaticUpdates = (payload) => {
+	return {
+		type: actionTypes.AUTOMATIC_UPDATES,
+		payload: payload,
+	}
+}

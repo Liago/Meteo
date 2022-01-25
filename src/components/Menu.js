@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { IonButton, IonContent, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonToggle } from "@ionic/react";
+import { IonButton, IonContent, IonIcon, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonToggle } from "@ionic/react";
 import { cogOutline, cogSharp } from "ionicons/icons";
 
 import { ThemeContext } from "./themeContext";
@@ -55,7 +55,7 @@ const Menu = () => {
 					</IonItem>
 					<IonItem
 						lines="none"
-						onClick={showSettings}
+						onClick={() => console.log('click')}
 					>
 						<IonIcon
 							slot="start"

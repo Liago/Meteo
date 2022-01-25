@@ -1,15 +1,17 @@
 import { useContext } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { IonButton, IonContent, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonToggle } from "@ionic/react";
+import { cogOutline, cogSharp } from "ionicons/icons";
 
 import { ThemeContext } from "./themeContext";
 
 import MenuLocations from "./menu/menuLocations";
 import { MenuItems } from "./menu/menuItems";
-import { appPages } from "utils/config";
+import Container from "./UI/container";
 
 import { resetStore, setCurrentLocation } from "store/actions";
 
+import { appPages } from "utils/config";
 import "./Menu.css";
 
 
@@ -51,14 +53,26 @@ const Menu = () => {
 							Reset
 						</IonButton>
 					</IonItem>
+					<IonItem
+						lines="none"
+						onClick={showSettings}
+					>
+						<IonIcon
+							slot="start"
+							ios={cogOutline}
+							md={cogSharp}
+						/>
+						<IonLabel>Impostazioni</IonLabel>
+					</IonItem>
 					{renderMenu()}
 				</IonList>
 				<IonList id="labels-list">
 					<IonListHeader>Città</IonListHeader>
-					<div className="container">
+					<Container paddingX={0} marginX={0}>
 						{renderLocationsSaved()}
-					</div>
+					</Container>
 				</IonList>
+
 			</IonContent>
 		</IonMenu>
 	);

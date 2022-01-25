@@ -19,7 +19,12 @@ const MenuLocations = ({ locations, selectCity }) => {
 		dispatch(removeLocation(cityId))
 		dispatch(removeLocationForecastData(cityId))
 	}
-
+	const displayCity = (city) => {
+		const label = city.split(',')[0]
+		return (
+			<IonLabel>{label}</IonLabel>
+		)
+	}
 	return (
 		locations.map(city => (
 			<IonItem
@@ -36,7 +41,7 @@ const MenuLocations = ({ locations, selectCity }) => {
 						removeHandler(city.place_id);
 					}}
 				/>
-				<IonLabel>{city.display_name}</IonLabel>
+				{displayCity(city.display_name)}
 			</IonItem>
 		))
 	)

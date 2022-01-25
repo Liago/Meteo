@@ -1,16 +1,16 @@
-import { mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp } from "ionicons/icons";
+import { barChartOutline, barChartSharp, cloudyNightOutline, cloudyNightSharp } from "ionicons/icons";
 
 export const appPages = [
 	{
-		title: "Today",
+		title: "Previsioni",
 		url: "/",
-		iosIcon: mailOutline,
-		mdIcon: mailSharp,
+		iosIcon: cloudyNightOutline,
+		mdIcon: cloudyNightSharp,
 	},
 	{
-		title: "Graph",
+		title: "Grafici",
 		url: "/graph",
-		iosIcon: paperPlaneOutline,
-		mdIcon: paperPlaneSharp,
+		iosIcon: barChartOutline,
+		mdIcon: barChartSharp,
 	},
 ];

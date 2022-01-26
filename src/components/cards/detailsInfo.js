@@ -31,9 +31,9 @@ const DetailsInfo = ({ data }) => {
 			<div className='grid grid-cols-3 gap-3 text-xs font-medium'>
 				<MiniCardInfo icon='humidity' label='Umidità' value={getPercent(data.humidity)} />
 				<MiniCardInfo icon='humidity' label='Visibilità' value={round(data.visibility)} unit='Km' />
-				<MiniCardInfo icon='day-sunny' label='Indice UV' value={data.uvIndex} unit='UV' />
-				<MiniCardInfo icon='day-sunny' label='IUV Time' value={getDataFormatted(data.uvIndexTime, 'HH:mm')} />
 				<MiniCardInfo icon='raindrop' label='Rugiada' value={getTemp(data.dewPoint)} />
+				<MiniCardInfo icon='day-sunny' label='UV' value={data.uvIndex} unit='UV' />
+				<MiniCardInfo icon='day-sunny' label='Time' value={getDataFormatted(data.uvIndexTime, 'HH:mm')} />
 			</div>		
 		</CardContainer>
 	)

@@ -3,6 +3,7 @@ import WeatherIcon from "components/UI/weatherIcon";
 import { getDataFormatted, getPercent, getTemp } from "../../utils/utils";
 import { round } from 'lodash'
 import SunriseContainer from "components/forecast/sunrise";
+import MiniCardInfo from "components/UI/miniCard";
 
 const Today = ({ data, summary }) => {
 	const renderTemperature = () => {
@@ -35,44 +36,59 @@ const Today = ({ data, summary }) => {
 				<h3 className="text-right text-sm font-light text-gray-900 pl-3">Adesso, {getDataFormatted(data.time, 'dddd DD MMMM YYYY')}</h3>
 				<div className="flex justify-end">
 					{/* <i className={`wi wi-${getWeatherIcon(summary.icon)}`} /> */}
-					<span className="text-sm lowercase font-light text-red-700 pl-3">{summary.text}</span>
+					<span className="text-right text-sm lowercase font-light text-blue-500 pl-3">{summary.text}</span>
 				</div>
 			</>
 		)
 	}
 	return (
 		<div>
-			<div className="bg-white shadow-md rounded-lg w-full pt-3">
-				<div className="px-4 py-5 sm:px-6">
+			<div className="bg-white w-full pt-3 h-screen">
+				<div className="px-4 py-5 sm:px-6 h-full">
 					{renderCardHeader()}
-					<div className="flex justify-between pt-8">
-						<div className="text-6xl text-grey-600 text-center">
-							<WeatherIcon icon={data.icon} />
+					<div className="flex items-start flex-col h-full">
+						<div className="mb-auto">
+							<div className="flex justify-between pt-8">
+								<div className="text-6xl text-grey-600 text-center">
+									<WeatherIcon icon={data.icon} />
+								</div>
+								{renderTemperature()}
+							</div>
+							<div className="flex justify-between pt-3 pb-1.5">
+								<div className="flex justify-end font-normal text-xs">
+									{renderSunriseTime()}
+								</div>
+								<div className="text-xs text-right font-light text-gray-900">{data.summary}</div>
+							</div>
 						</div>
-						{renderTemperature()}
-					</div>
-					<div className="flex justify-between pt-3 pb-1.5">
-						<div className="flex justify-end font-normal text-xs">
-							{renderSunriseTime()}
-						</div>
-						<div className="text-xs text-right font-light text-gray-900">{data.summary}</div>
-					</div>
-					<div className="flex justify-between w-full font-normal text-xs pt-2">
-						<div className="flex items-center text-gray-700 pr-1">
-							<WeatherIcon icon='rain' />
-							<span className="px-1">{getPercent(data.precipProbability)}</span>
-						</div>
-						<div className="flex items-center text-gray-700 pl-1">
-							<WeatherIcon icon='cloud' />
-							<span className="px-1">{getPercent(data.cloudCover)}</span>
-						</div>
-						<div className="flex items-center text-gray-700 pl-1">
-							<WeatherIcon icon='windy' />
-							<span className="px-1">{round(data.windSpeed, 1)}m/s</span>
-						</div>
-						<div className="flex items-center text-gray-700 pl-1">
-							<WeatherIcon icon='humidity' />
-							<span className="px-1">{getPercent(data.humidity)}</span>
+						<div className="">
+							<div className="grid grid-cols-4 gap-1 text-xs font-medium">
+								<MiniCardInfo
+									icon='rain'
+									label='Prob.'
+									fontSize='text-xs'
+									value={getPercent(data.precipProbability)}
+									/>
+								<MiniCardInfo
+									icon='cloud'
+									label='Cop.'
+									fontSize='text-xs'
+									value={getPercent(data.cloudCover)}
+									/>
+								<MiniCardInfo
+									icon='windy'
+									label='Vento'
+									fontSize='text-xs'
+									value={round(data.windSpeed, 1)}
+									unit='m/s'
+									/>
+								<MiniCardInfo
+									icon='humidity'
+									label='Umidità'
+									fontSize='text-xs'
+									value={getPercent(data.humidity)}
+								/>
+							</div>
 						</div>
 					</div>
 				</div>

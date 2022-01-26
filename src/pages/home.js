@@ -151,8 +151,8 @@ const Home = () => {
 					className="p-4"
 					{...slideOptions}
 				>
-					{renderNow()}
 					{renderToday()}
+					{renderNow()}
 				</Slider>
 				{renderWeekdays()}
 			</>

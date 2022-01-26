@@ -6,16 +6,18 @@ const HeaderToolbar = ({ renderCityName, setShowModal, showModal, refreshForecas
 		<IonHeader>
 			<IonToolbar>
 				<IonButtons slot="start">
-					<IonMenuButton />
+					<IonMenuButton color="dark" />
 				</IonButtons>
-				<IonTitle>{renderCityName()}</IonTitle>
+				<IonTitle className="text-left">{renderCityName()}</IonTitle>
 				<IonButtons slot="primary">
 					<IonButton
+						color="dark"
 						onClick={() => refreshForecast()}
-					>
+						>
 						<IonIcon slot='icon-only' icon={reload} />
 					</IonButton>
 					<IonButton
+						color="dark"
 						onClick={() => setShowModal(!showModal)}
 					>
 						<IonIcon slot="icon-only" icon={search} />

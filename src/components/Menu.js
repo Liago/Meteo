@@ -6,12 +6,12 @@ import { cogOutline, cogSharp } from "ionicons/icons";
 import MenuLocations from "./menu/menuLocations";
 import { MenuItems } from "./menu/menuItems";
 import Container from "./UI/container";
+import Settings from "./UI/settings";
 
 import { automaticUpdates, resetStore, setCurrentLocation } from "store/actions";
 
 import { appPages } from "utils/config";
 import "./Menu.css";
-import Settings from "./UI/settings";
 
 const Menu = () => {
 	const dispatch = useDispatch();

@@ -1,4 +1,4 @@
-import { IonApp, IonRouterOutlet, IonSplitPane, setupIonicReact } from "@ionic/react";
+import { IonApp, IonRouterOutlet, IonSplitPane, isPlatform, setupIonicReact } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import { Route } from "react-router-dom";
 import { Provider } from "react-redux";
@@ -33,7 +33,8 @@ import "./css/main.css";
 
 
 const App = () => {
-	setupIonicReact({ mode: 'md' })
+	let mode = isPlatform('android') ? 'md' : 'ios';
+	setupIonicReact({ mode: mode })
 	const { toggle } = useContext(ThemeContext);
 	document.body.setAttribute('class', toggle ? 'dark' : 'light');
 

@@ -64,9 +64,7 @@
     "build": "craco build",
     "ionic:build": "craco build",
     "test": "craco test --transformIgnorePatterns 'node_modules/(?!(@ionic/react|@ionic/react-router|@ionic/core|@stencil/core|ionicons)/)'",
-    "eject": "react-scripts eject",
-    "storybook": "start-storybook -p 6006 -s public",
-    "build-storybook": "build-storybook -s public"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
@@ -98,12 +96,6 @@
   },
   "devDependencies": {
     "@capacitor/cli": "^3.3.2",
-    "@storybook/addon-actions": "^6.4.9",
-    "@storybook/addon-essentials": "^6.4.9",
-    "@storybook/addon-links": "^6.4.9",
-    "@storybook/node-logger": "^6.4.9",
-    "@storybook/preset-create-react-app": "^3.2.0",
-    "@storybook/react": "^6.4.9",
     "@types/redux-logger": "^3.0.9",
     "autoprefixer": "^9.8.8",
     "postcss": "^7.0.39",

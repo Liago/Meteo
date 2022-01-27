@@ -26,7 +26,8 @@ const Home = () => {
 	const [searchText, setSearchText] = useState('');
 	const [searchResults, setSearchResults] = useState(null);
 	const slideOptions = {
-		dots: true,
+		dots: false,
+		arrows: false,
 		infinite: true,
 		speed: 500,
 		slidesToShow: 1,

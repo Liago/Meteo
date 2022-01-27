@@ -35,7 +35,6 @@ const Today = ({ data, summary }) => {
 			<>
 				<h3 className="text-right text-sm font-light text-gray-900 pl-3">Adesso, {getDataFormatted(data.time, 'dddd DD MMMM YYYY')}</h3>
 				<div className="flex justify-end">
-					{/* <i className={`wi wi-${getWeatherIcon(summary.icon)}`} /> */}
 					<span className="text-right text-sm lowercase font-light text-blue-500 pl-3">{summary.text}</span>
 				</div>
 			</>
@@ -43,11 +42,11 @@ const Today = ({ data, summary }) => {
 	}
 	return (
 		<div>
-			<div className="bg-white w-full pt-3 h-screen">
+			<div className="bg-white dark:bg-black w-full pt-3 h-screen">
 				<div className="px-4 py-5 sm:px-6 h-full">
 					{renderCardHeader()}
 					<div className="flex items-start flex-col h-full">
-						<div className="mb-auto">
+						<div>
 							<div className="flex justify-between pt-8">
 								<div className="text-6xl text-grey-600 text-center">
 									<WeatherIcon icon={data.icon} />
@@ -61,7 +60,7 @@ const Today = ({ data, summary }) => {
 								<div className="text-xs text-right font-light text-gray-900">{data.summary}</div>
 							</div>
 						</div>
-						<div className="">
+						<div className="mt-96">
 							<div className="grid grid-cols-4 gap-1 text-xs font-medium">
 								<MiniCardInfo
 									icon='rain'

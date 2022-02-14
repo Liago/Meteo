@@ -43,9 +43,9 @@ const Today = ({ data, summary }) => {
 	return (
 		<div>
 			<div className="bg-white dark:bg-black w-full pt-3 h-screen">
-				<div className="px-4 py-5 sm:px-6 h-full">
+				<div className="px-2 py-5 h-full">
 					{renderCardHeader()}
-					<div className="flex items-start flex-col h-full">
+					<div className="flex flex-col h-full">
 						<div>
 							<div className="flex justify-between pt-8">
 								<div className="text-6xl text-grey-600 text-center">
@@ -60,27 +60,27 @@ const Today = ({ data, summary }) => {
 								<div className="text-xs text-right font-light text-gray-900">{data.summary}</div>
 							</div>
 						</div>
-						<div className="mt-96">
+						<div className="flex-grow">
 							<div className="grid grid-cols-4 gap-1 text-xs font-medium">
 								<MiniCardInfo
 									icon='rain'
 									label='Prob.'
 									fontSize='text-xs'
 									value={getPercent(data.precipProbability)}
-									/>
+								/>
 								<MiniCardInfo
 									icon='cloud'
 									label='Cop.'
 									fontSize='text-xs'
 									value={getPercent(data.cloudCover)}
-									/>
+								/>
 								<MiniCardInfo
 									icon='windy'
 									label='Vento'
 									fontSize='text-xs'
 									value={round(data.windSpeed, 1)}
 									unit='m/s'
-									/>
+								/>
 								<MiniCardInfo
 									icon='humidity'
 									label='Umidità'

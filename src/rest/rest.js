@@ -8,7 +8,7 @@ export const fetchWeather = ({ latitude, longitude }) => {
 		url: `${endpoint.RAPID_API}/${latitude},${longitude}`,
 		params: { units: 'si', lang: 'it' },
 		headers: {
-			'x-rapidapi-host': endpoint.RAPID_API,
+			'x-rapidapi-host': endpoint.RAPID_API_HOST,
 			'x-rapidapi-key': api_keys.RAPID_API
 		}
 	};

@@ -61,7 +61,7 @@
   },
   "scripts": {
 	"config": "node set-env.js",
-    "start": "PORT=3005 craco start",
+    "start": "PORT=5000 craco start",
     "build": "craco build",
     "ionic:build": "craco build",
     "test": "craco test --transformIgnorePatterns 'node_modules/(?!(@ionic/react|@ionic/react-router|@ionic/core|@stencil/core|ionicons)/)'",

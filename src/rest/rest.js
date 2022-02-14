@@ -3,7 +3,7 @@ import { endpoint, api_keys } from "../config/environment.ts";
 const axios = require("axios").default;
 
 export const fetchWeather = ({ latitude, longitude }) => {
-	var options = {
+	const options = {
 		method: 'GET',
 		url: `${endpoint.RAPID_API}/${latitude},${longitude}`,
 		params: { units: 'si', lang: 'it' },
@@ -16,7 +16,7 @@ export const fetchWeather = ({ latitude, longitude }) => {
 }
 
 export const getLocation = ({ latitude, longitude }) => {
-	var options = {
+	const options = {
 		method: 'GET',
 		url: `${endpoint.LOCATION_IQ}/reverse.php?key=${api_keys.LOCATION_IQ}&lat=${latitude}&lon=${longitude}&format=json`,
 	};

@@ -1,24 +1,24 @@
-import { HOST, KEY, LOCATION_IQ_TOKEN } from '../config/appConfig'
+import { endpoint, api_keys } from "../config/environment.ts";
 
 const axios = require("axios").default;
 
 export const fetchWeather = ({ latitude, longitude }) => {
-	var options = {
+	const options = {
 		method: 'GET',
-		url: `https://dark-sky.p.rapidapi.com/${latitude},${longitude}`,
+		url: `${endpoint.RAPID_API}/${latitude},${longitude}`,
 		params: { units: 'si', lang: 'it' },
 		headers: {
-			'x-rapidapi-host': HOST,
-			'x-rapidapi-key': KEY
+			'x-rapidapi-host': endpoint.RAPID_API_HOST,
+			'x-rapidapi-key': api_keys.RAPID_API
 		}
 	};
 	return promiseFunction(options)
 }
 
 export const getLocation = ({ latitude, longitude }) => {
-	var options = {
+	const options = {
 		method: 'GET',
-		url: `https://eu1.locationiq.com/v1/reverse.php?key=${LOCATION_IQ_TOKEN}&lat=${latitude}&lon=${longitude}&format=json`,
+		url: `${endpoint.LOCATION_IQ}/reverse.php?key=${api_keys.LOCATION_IQ}&lat=${latitude}&lon=${longitude}&format=json`,
 	};
 	return promiseFunction(options)
 }
@@ -26,7 +26,7 @@ export const getLocation = ({ latitude, longitude }) => {
 export const searchCity = (city) => {
 	var options = {
 		method: 'GET',
-		url: `https://eu1.locationiq.com/v1/search.php?key=${LOCATION_IQ_TOKEN}&q=${city}&format=json`,
+		url: `${endpoint.LOCATION_IQ}/search.php?key=${api_keys.LOCATION_IQ}&q=${city}&format=json`,
 	};
 	return promiseFunction(options)
 }

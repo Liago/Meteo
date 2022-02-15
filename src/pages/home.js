@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { IonFooter, IonPage, IonToolbar } from "@ionic/react";
+import { IonFooter, IonPage, IonToolbar, useIonModal } from "@ionic/react";
 import { Geolocation } from '@ionic-native/geolocation';
 
 import Layout from "../components/layout";
@@ -15,6 +15,7 @@ import { saveLocation, saveLocationForecastData, setCurrentLocation } from "../s
 import { fetchWeather, getLocation, searchCity } from "../rest/rest";
 
 import HeaderToolbar from "components/header/headerToolbar";
+import AlertContainer from "components/UI/alertContainer";
 
 
 
@@ -25,6 +26,13 @@ const Home = () => {
 	const [showModal, setShowModal] = useState(false);
 	const [searchText, setSearchText] = useState('');
 	const [searchResults, setSearchResults] = useState(null);
+
+
+	const handleDismiss = () => dismissAlert(); 
+	const [showAlert, dismissAlert] = useIonModal(AlertContainer, {
+		alerts: forecast[selectedLocation.place_id].alerts,
+		onDismiss: handleDismiss
+	  });
 
 	useEffect(() => {
 		getCurrentLocation();
@@ -44,6 +52,11 @@ const Home = () => {
 
 		fetchForecast(selectedLocation, false);
 	}, [selectedLocation])
+
+
+	const showAlertHandler = (content) => {
+		showAlert()
+	}
 
 	const checkForecastDifference = () => {
 		if (!forecast[selectedLocation?.place_id]) return;
@@ -159,6 +172,8 @@ const Home = () => {
 				refreshForecast={refreshForecast}
 				setShowModal={setShowModal}
 				showModal={showModal}
+				showAlert={showAlertHandler}
+				areThereAlerts={forecast[selectedLocation.place_id].alerts ? true : false}
 			/>
 			<Layout>
 				<Container paddingX={4} marginX="auto">

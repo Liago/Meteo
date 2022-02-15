@@ -1,23 +1,15 @@
+import icons from '../config/icons.json'
+
 import 'moment/locale/it'
 import moment from "moment";
-import { round } from 'lodash'
+import { round, isNil } from 'lodash'
 
 export const getDataFormatted = (unixDate, dateFormat) => {
 	return moment.unix(unixDate).format(dateFormat)
 }
 
 export const getWeatherIcon = (icon) => {
-	// console.log('icon :>> ', icon);
-	switch (icon) {
-		case 'partly-cloudy-day':
-			return 'day-cloudy'
-		case 'clear-day':
-			return 'day-sunny'
-		case 'clear-night':
-			return 'night-clear'	
-		default:
-			return icon
-	}
+	return !isNil(icons['iconset'][icon]) ? icons['iconset'][icon] : icon;
 }
 
 export const addCoordinates = (location) => {

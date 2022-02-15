@@ -140,13 +140,9 @@ const Home = () => {
 		if (!selectedLocation) return;
 		if (!forecast[selectedLocation.place_id]) return;
 
-		console.log('forecast[selectedLocation.place_id]temperatureHigh :>> ', forecast[selectedLocation.place_id].daily.data[0]);
-
 		return (
 			<div className="flex justify-between">
-				<p className="text-sm text-gray-700 font-medium">
-					Tendenza: {forecast[selectedLocation.place_id].daily.summary}
-				</p>
+				<p className="text-xs text-gray-700 font-light">{forecast[selectedLocation.place_id].daily.summary}</p>
 				<div className="flex justify-between p-2 bg-blue-200 border border-sm border-blue-500 shadow-md rounded-md">
 					<p className="text-sm font-medium text-blue-900">{getTemp(forecast[selectedLocation.place_id].daily.data[0].temperatureHigh)}</p>
 					<p className="text-sm font-medium text-blue-900">{getTemp(forecast[selectedLocation.place_id].daily.data[0].temperatureLow)}</p>
@@ -180,8 +176,8 @@ const Home = () => {
 					/>
 				</Container>
 			</Layout>
-			<IonFooter>
-				<IonToolbar className="ion-no-border">
+			<IonFooter collapse="fade">
+				<IonToolbar className="footer-toolbar " color="light">
 					{renderTodaySituation()}
 				</IonToolbar>
 			</IonFooter>

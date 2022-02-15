@@ -146,3 +146,7 @@ ion-item.selected {
 .slick-list {
 	padding: 5px 0 !important;
 }
+
+.footer-toolbar{
+	--background:rgba(229, 231, 235, var(--tw-border-opacity));
+}

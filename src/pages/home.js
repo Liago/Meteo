@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { IonPage } from "@ionic/react";
+import { IonFooter, IonPage, IonToolbar } from "@ionic/react";
+import { Geolocation } from '@ionic-native/geolocation';
 
 import Layout from "../components/layout";
 import Today from "../components/cards/today";
@@ -9,13 +10,12 @@ import Search from "../components/search/search";
 import Container from '../components/UI/container';
 import Spinner from "components/UI/spinner";
 
-import { addCoordinates, itsTimeToRefresh } from "utils/utils";
+import { addCoordinates, getTemp, itsTimeToRefresh } from "utils/utils";
 import { saveLocation, saveLocationForecastData, setCurrentLocation } from "../store/actions";
 import { fetchWeather, getLocation, searchCity } from "../rest/rest";
 
-import Slider from "react-slick";
 import HeaderToolbar from "components/header/headerToolbar";
-import { Geolocation } from '@ionic-native/geolocation';
+
 
 
 const Home = () => {
@@ -25,14 +25,7 @@ const Home = () => {
 	const [showModal, setShowModal] = useState(false);
 	const [searchText, setSearchText] = useState('');
 	const [searchResults, setSearchResults] = useState(null);
-	const slideOptions = {
-		dots: false,
-		arrows: false,
-		infinite: true,
-		speed: 500,
-		slidesToShow: 1,
-		slidesToScroll: 1
-	};
+
 	useEffect(() => {
 		getCurrentLocation();
 		checkForecastDifference();
@@ -105,12 +98,6 @@ const Home = () => {
 		dispatch(setCurrentLocation(locationProps))
 	}
 
-	const renderToday = () => {
-		if (!selectedLocation) return;
-		if (!forecast[selectedLocation.place_id]) return;
-
-		return <Today data={forecast[selectedLocation.place_id].daily.data[0]} />;
-	};
 	const renderNow = () => {
 		if (!selectedLocation) return;
 		if (!forecast[selectedLocation.place_id]) return;
@@ -121,6 +108,8 @@ const Home = () => {
 				text: forecast[selectedLocation.place_id].daily.summary,
 				icon: forecast[selectedLocation.place_id].daily.icon
 			}}
+			hourly={forecast[selectedLocation.place_id].hourly.data}
+			today={forecast[selectedLocation.place_id].daily.data[0]}
 		/>;
 	};
 	const renderWeekdays = () => {
@@ -145,18 +134,29 @@ const Home = () => {
 	const renderMainContent = () => {
 		if (!selectedLocation || !forecast[selectedLocation.place_id]) return <Spinner />;
 
-
 		return (
 			<>
-				<Slider
-					className="p-4"
-					{...slideOptions}
-				>
-					{renderToday()}
-					{renderNow()}
-				</Slider>
-				{renderWeekdays()}
+				{renderNow()}
 			</>
+		)
+	}
+	const renderTodaySituation = () => {
+		if (!selectedLocation) return;
+		if (!forecast[selectedLocation.place_id]) return;
+
+		console.log('forecast[selectedLocation.place_id]temperatureHigh :>> ', forecast[selectedLocation.place_id].daily.data[0]);
+
+		return (
+			<div className="flex justify-between">
+				<p className="text-sm text-gray-700 font-medium">
+					Tendenza: {forecast[selectedLocation.place_id].daily.summary}
+				</p>
+				<div className="flex justify-between p-2 bg-blue-200 border border-sm border-blue-500 shadow-md rounded-md">
+					<p className="text-sm font-medium text-blue-900">{getTemp(forecast[selectedLocation.place_id].daily.data[0].temperatureHigh)}</p>
+					<p className="text-sm font-medium text-blue-900">{getTemp(forecast[selectedLocation.place_id].daily.data[0].temperatureLow)}</p>
+				</div>
+
+			</div>
 		)
 	}
 
@@ -170,9 +170,10 @@ const Home = () => {
 			/>
 			<Layout>
 				<Container paddingX={4} marginX="auto">
-					<div>
+					<div className="flex flex-col h-screen">
 						{renderMainContent()}
 					</div>
+					{renderWeekdays()}
 					<Search
 						showModal={showModal}
 						setShowModal={setShowModal}
@@ -183,6 +184,11 @@ const Home = () => {
 					/>
 				</Container>
 			</Layout>
+			<IonFooter>
+				<IonToolbar className="ion-no-border">
+					{renderTodaySituation()}
+				</IonToolbar>
+			</IonFooter>
 		</IonPage>
 	);
 };

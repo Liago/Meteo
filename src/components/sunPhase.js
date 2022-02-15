@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { IonIcon, IonItem, IonRange } from '@ionic/react';
 import { moon, sunny } from 'ionicons/icons';
 
-import MiniCardInfo from './UI/miniCard';
+import MiniCardInfo from './cards/miniCard';
 
 import { getDataFormatted, getPercent } from 'utils/utils';
 import moment from 'moment';

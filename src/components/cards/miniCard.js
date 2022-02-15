@@ -1,5 +1,5 @@
-import WeatherIcon from "./weatherIcon";
-import { MiniCardContainer } from './cardContainer';
+import WeatherIcon from "../UI/weatherIcon";
+import { MiniCardContainer } from '../UI/cardContainer';
 
 const MiniCardInfo = ({ icon, label, value, unit, fontSize }) => {
 	return (

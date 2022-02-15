@@ -3,7 +3,7 @@ import { round } from 'lodash';
 import WeatherIcon from "components/UI/weatherIcon";
 import SunriseContainer from "components/forecast/sunrise";
 import { CardContainer } from "components/UI/cardContainer";
-import MiniCardInfo from "components/UI/miniCard";
+import MiniCardInfo from "components/cards/miniCard";
 
 const DetailsInfo = ({ data }) => {
 	return (

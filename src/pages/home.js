@@ -104,10 +104,6 @@ const Home = () => {
 
 		return <Today
 			data={forecast[selectedLocation.place_id].currently}
-			summary={{
-				text: forecast[selectedLocation.place_id].daily.summary,
-				icon: forecast[selectedLocation.place_id].daily.icon
-			}}
 			hourly={forecast[selectedLocation.place_id].hourly.data}
 			today={forecast[selectedLocation.place_id].daily.data[0]}
 		/>;

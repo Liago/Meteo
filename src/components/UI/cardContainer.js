@@ -3,5 +3,5 @@ export const CardContainer = ({ children }) => {
 }
 
 export const MiniCardContainer = ({ children }) => {
-	return <div className="p-2 rounded-lg shadow-md border">{children}</div>
+	return <div className="mx-1 p-2 rounded-lg shadow-md border">{children}</div>
 }

@@ -21,20 +21,18 @@ const Today = ({ data, today, hourly }) => {
 		if (!hourly) return;
 
 		return (
-			<>
-				<Slider
-					{...slideOptions}
-				>
-					{hourly.map(item => {
-						return (
-							<HourlyCard
-								key={item.time}
-								item={item}
-							/>
-						)
-					})}
-				</Slider>
-			</>
+			<Slider
+				{...slideOptions}
+			>
+				{hourly.map(item => {
+					return (
+						<HourlyCard
+							key={item.time}
+							item={item}
+						/>
+					)
+				})}
+			</Slider>
 		)
 	}
 
@@ -83,7 +81,7 @@ const Today = ({ data, today, hourly }) => {
 						</div>
 					</div>
 					<div className="py-3">
-					{renderHourlyForecast()}
+						{renderHourlyForecast()}
 					</div>
 					<div className="flex-grow">
 						<div className="grid grid-cols-4 gap-1 text-xs font-medium">

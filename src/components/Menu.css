@@ -142,3 +142,7 @@ ion-item.selected {
 	font-weight: 300;
 	color: var(--color, var(--ion-color-step-400, #999999));
 }
+
+.slick-list {
+	padding: 5px 0 !important;
+}

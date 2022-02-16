@@ -5,7 +5,11 @@ module.exports = {
 		fontFamily: {
 			lato: ['Lato'],
 		},
-		extend: {},
+		extend: {
+			height: {
+				'75': '75vh',
+			  }
+		},
 	},
 	variants: {},
 	plugins: [],

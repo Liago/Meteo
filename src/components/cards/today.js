@@ -21,9 +21,7 @@ const Today = ({ data, today, hourly }) => {
 		if (!hourly) return;
 
 		return (
-			<Slider
-				{...slideOptions}
-			>
+			<div className="flex flex-row overflow-scroll py-3">
 				{hourly.map(item => {
 					return (
 						<HourlyCard
@@ -32,7 +30,7 @@ const Today = ({ data, today, hourly }) => {
 						/>
 					)
 				})}
-			</Slider>
+			</div>
 		)
 	}
 

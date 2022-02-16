@@ -7,7 +7,7 @@ const HourlyCard = ({ item }) => {
 	const { time, icon, temperature } = item;
 
 	return (
-		<MiniCardContainer>
+		<MiniCardContainer additionalClass="px-4">
 			<div className="flex flex-col text-center text-sm">
 				<p className="font-light text-xs">{getDataFormatted(time, 'H')}</p>
 				<div className="text-center">

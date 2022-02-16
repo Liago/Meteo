@@ -4,16 +4,10 @@ import MiniCardInfo from "components/cards/miniCard";
 
 import { getDataFormatted, getPercent, getTemp } from "../../utils/utils";
 
-import { ThemeContext } from "../themeContext";
-
-
 import { round } from 'lodash'
 import HourlyCard from "./hourlyCard";
-import { useContext } from "react";
 
 const Today = ({ data, today, hourly }) => {
-	const { height } = useContext(ThemeContext);
-
 	const renderHourlyForecast = () => {
 		if (!hourly) return;
 
@@ -59,7 +53,7 @@ const Today = ({ data, today, hourly }) => {
 	}
 	return (
 		<div className="bg-white dark:bg-black w-full pt-3">
-			<div className="px-2 py-5 flex flex-col justify-between" style={{ 'height': height }}>
+			<div className="flex flex-col justify-between px-2 py-5 h-90">
 				{renderCardHeader()}
 				<div className="flex flex-col">
 					<div>

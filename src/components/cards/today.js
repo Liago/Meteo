@@ -4,18 +4,10 @@ import MiniCardInfo from "components/cards/miniCard";
 
 import { getDataFormatted, getPercent, getTemp } from "../../utils/utils";
 
-import Slider from "react-slick";
 import { round } from 'lodash'
 import HourlyCard from "./hourlyCard";
 
 const Today = ({ data, today, hourly }) => {
-	const slideOptions = {
-		dots: false,
-		arrows: false,
-		slidesToShow: 6,
-		slidesToScroll: 6
-	};
-
 
 	const renderHourlyForecast = () => {
 		if (!hourly) return;

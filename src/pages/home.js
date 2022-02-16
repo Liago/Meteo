@@ -10,7 +10,7 @@ import Search from "../components/search/search";
 import Container from '../components/UI/container';
 import Spinner from "components/UI/spinner";
 
-import { addCoordinates, getTemp, itsTimeToRefresh } from "utils/utils";
+import { addCoordinates, itsTimeToRefresh } from "utils/utils";
 import { saveLocation, saveLocationForecastData, setCurrentLocation } from "../store/actions";
 import { fetchWeather, getLocation, searchCity } from "../rest/rest";
 

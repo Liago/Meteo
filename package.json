@@ -65,7 +65,8 @@
     "build": "craco build",
     "ionic:build": "craco build",
     "test": "craco test --transformIgnorePatterns 'node_modules/(?!(@ionic/react|@ionic/react-router|@ionic/core|@stencil/core|ionicons)/)'",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+	"ios-build": "ionic cap build ios"
   },
   "eslintConfig": {
     "extends": [

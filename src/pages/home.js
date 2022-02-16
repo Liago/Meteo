@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { IonPage, useIonModal } from "@ionic/react";
 import { Geolocation } from '@ionic-native/geolocation';
@@ -27,6 +27,7 @@ const Home = () => {
 	const [showModal, setShowModal] = useState(false);
 	const [searchText, setSearchText] = useState('');
 	const [searchResults, setSearchResults] = useState(null);
+	const pageRef = useRef()
 
 
 	const handleDismiss = () => dismissAlert();
@@ -129,7 +130,7 @@ const Home = () => {
 		return (
 			forecast[selectedLocation.place_id].daily.data.map((day, i) => {
 				if (i >= 1)
-					return <Daily key={i} data={day} />;
+					return <Daily key={i} data={day} pageRef={pageRef} />;
 			})
 		)
 	};
@@ -161,7 +162,7 @@ const Home = () => {
 	}
 
 	return (
-		<IonPage>
+		<IonPage ref={pageRef}>
 			<HeaderToolbar
 				renderCityName={renderCityName}
 				refreshForecast={refreshForecast}

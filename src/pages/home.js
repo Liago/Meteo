@@ -30,7 +30,7 @@ const Home = () => {
 
 	const handleDismiss = () => dismissAlert(); 
 	const [showAlert, dismissAlert] = useIonModal(AlertContainer, {
-		alerts: forecast[selectedLocation.place_id].alerts,
+		alerts: forecast[selectedLocation?.place_id]?.alerts || null,
 		onDismiss: handleDismiss
 	  });
 
@@ -173,7 +173,7 @@ const Home = () => {
 				setShowModal={setShowModal}
 				showModal={showModal}
 				showAlert={showAlertHandler}
-				areThereAlerts={forecast[selectedLocation.place_id].alerts ? true : false}
+				areThereAlerts={(forecast[selectedLocation?.place_id]?.alerts || null) ? true : false}
 			/>
 			<Layout>
 				<Container paddingX={4} marginX="auto">

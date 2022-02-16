@@ -17,7 +17,7 @@ const HeaderToolbar = ({ renderCityName, setShowModal, showModal, refreshForecas
 
 	return (
 		<IonHeader>
-			<IonToolbar>
+			<IonToolbar className="font-lato">
 				<IonButtons slot="start">
 					<IonMenuButton color="dark" />
 				</IonButtons>

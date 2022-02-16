@@ -45,7 +45,7 @@ const Today = ({ data, today, hourly }) => {
 	const renderCardHeader = () => {
 		return (
 			<>
-				<h3 className="text-right text-sm font-light text-gray-900 pl-3">Adesso, {getDataFormatted(data.time, 'dddd DD MMMM YYYY')}</h3>
+				<h3 className="text-right text-sm font-light text-gray-900 pl-3">{getDataFormatted(data.time, 'dddd DD MMMM YYYY')}</h3>
 				<div className="flex justify-end">
 					<span className="text-right text-sm lowercase font-light text-gray-900 pl-3">{data.summary}</span>
 				</div>
@@ -53,10 +53,10 @@ const Today = ({ data, today, hourly }) => {
 		)
 	}
 	return (
-		<div className="bg-white dark:bg-black w-full pt-3 h-screen">
-			<div className="px-2 py-5 h-full">
+		<div className="bg-white dark:bg-black w-full pt-3">
+			<div className="px-2 py-5">
 				{renderCardHeader()}
-				<div className="flex flex-col h-full">
+				<div className="flex flex-col">
 					<div>
 						<div className="flex justify-between pt-8">
 							<div className={`text-6xl text-grey-600 text-center`}>
@@ -73,7 +73,7 @@ const Today = ({ data, today, hourly }) => {
 					<div className="py-3">
 						{renderHourlyForecast()}
 					</div>
-					<div className="flex-grow">
+					<div>
 						<div className="grid grid-cols-4 gap-1 text-xs font-medium">
 							<MiniCardInfo
 								icon='rain'

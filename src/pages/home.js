@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { IonFooter, IonPage, IonToolbar, useIonModal } from "@ionic/react";
+import { IonPage, useIonModal } from "@ionic/react";
 import { Geolocation } from '@ionic-native/geolocation';
 
 import Layout from "../components/layout";
@@ -14,8 +14,9 @@ import { addCoordinates, getTemp, itsTimeToRefresh } from "utils/utils";
 import { saveLocation, saveLocationForecastData, setCurrentLocation } from "../store/actions";
 import { fetchWeather, getLocation, searchCity } from "../rest/rest";
 
-import HeaderToolbar from "components/header/headerToolbar";
+import HeaderToolbar from "components/headerAndFooter/headerToolbar";
 import AlertContainer from "components/UI/alertContainer";
+import FooterToolbar from "components/headerAndFooter/footerToolbar";
 
 
 
@@ -28,11 +29,11 @@ const Home = () => {
 	const [searchResults, setSearchResults] = useState(null);
 
 
-	const handleDismiss = () => dismissAlert(); 
+	const handleDismiss = () => dismissAlert();
 	const [showAlert, dismissAlert] = useIonModal(AlertContainer, {
 		alerts: forecast[selectedLocation?.place_id]?.alerts || null,
 		onDismiss: handleDismiss
-	  });
+	});
 
 	useEffect(() => {
 		getCurrentLocation();
@@ -149,20 +150,14 @@ const Home = () => {
 			</>
 		)
 	}
-	const renderTodaySituation = () => {
+	const renderFooter = () => {
 		if (!selectedLocation) return;
 		if (!forecast[selectedLocation.place_id]) return;
 
-		return (
-			<div className="flex justify-between">
-				<p className="text-xs text-gray-700 font-light">{forecast[selectedLocation.place_id].daily.summary}</p>
-				<div className="flex justify-between p-2 bg-blue-200 border border-sm border-blue-500 shadow-md rounded-md">
-					<p className="text-sm font-medium text-blue-900">{getTemp(forecast[selectedLocation.place_id].daily.data[0].temperatureHigh)}</p>
-					<p className="text-sm font-medium text-blue-900">{getTemp(forecast[selectedLocation.place_id].daily.data[0].temperatureLow)}</p>
-				</div>
 
-			</div>
-		)
+		const { data, summary } = forecast[selectedLocation.place_id].daily
+
+		return <FooterToolbar data={data[0]} summary={summary} />
 	}
 
 	return (
@@ -177,7 +172,7 @@ const Home = () => {
 			/>
 			<Layout>
 				<Container paddingX={4} marginX="auto">
-					<div className="flex flex-col h-screen">
+					<div className="flex flex-col">
 						{renderMainContent()}
 					</div>
 					{renderWeekdays()}
@@ -191,11 +186,7 @@ const Home = () => {
 					/>
 				</Container>
 			</Layout>
-			<IonFooter collapse="fade">
-				<IonToolbar className="footer-toolbar " color="light">
-					{renderTodaySituation()}
-				</IonToolbar>
-			</IonFooter>
+			{renderFooter()}
 		</IonPage>
 	);
 };

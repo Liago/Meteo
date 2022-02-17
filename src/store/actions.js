@@ -43,3 +43,9 @@ export const automaticUpdates = (payload) => {
 		payload: payload,
 	}
 }
+export const showInfoHandler = (payload) => {
+	return {
+		type: actionTypes.SHOW_MODAL_INFO,
+		payload: payload
+	}
+}

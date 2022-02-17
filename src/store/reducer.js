@@ -5,7 +5,8 @@ const initialState = {
 		darkMode: false,
 		locations: [],
 		selectedLocation: null,
-		autoUpdates: false
+		autoUpdates: false,
+		showInfo: false,
 	},
 	forecast: []
 };
@@ -34,7 +35,12 @@ const app = (state = initialState.app, action) => {
 			return {
 				...state,
 				autoUpdates: action.payload
-			}	
+			}
+		case actionTypes.SHOW_MODAL_INFO:
+			return {
+				...state,
+				showInfo: action.payload
+			}
 		default:
 			return state;
 	}
@@ -58,7 +64,7 @@ const forecast = (state = initialState.forecast, action) => {
 
 		case actionTypes.RESET_STORE:
 			return initialState.forecast
-			
+
 		default:
 			return state;
 	}

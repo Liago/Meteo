@@ -1,3 +1,4 @@
+import { useSelector } from "react-redux"
 import { IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonModal, IonPage, IonTitle, IonToolbar } from "@ionic/react"
 import { close } from "ionicons/icons"
 
@@ -5,13 +6,14 @@ import DetailsInfo from "components/cards/detailsInfo"
 import SunAndWind from "components/sunWind"
 import Container from "components/UI/container"
 
-const ModalDailyInfo = ({ data, showModal, setShowModal, pageRef }) => {
+const ModalDailyInfo = ({ data, showModal, closeModal, pageRef }) => {
+	const { showInfo } = useSelector(state => state.app)
+
 	return (
 		<IonModal
-			isOpen={showModal}
+			isOpen={showInfo}
 			swipeToClose={true}
 			presentingElement={pageRef.current || undefined}
-			onDidDismiss={() => setShowModal(false)}
 		>
 			<IonContent>
 				<IonPage>
@@ -19,7 +21,7 @@ const ModalDailyInfo = ({ data, showModal, setShowModal, pageRef }) => {
 						<IonToolbar>
 							<IonTitle>Dettagli</IonTitle>
 							<IonButtons slot="end">
-								<IonButton onClick={() => setShowModal(false)}>
+								<IonButton onClick={() => closeModal()}>
 									<IonIcon slot="icon-only" icon={close} />
 								</IonButton>
 							</IonButtons>

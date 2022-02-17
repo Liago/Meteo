@@ -6,6 +6,7 @@ import { getDataFormatted, getPercent, getTemp } from "../../utils/utils";
 
 import { round } from 'lodash'
 import HourlyCard from "./hourlyCard";
+import SunPhaseComponent from "components/sun/sunPhase";
 
 const Today = ({ data, today, hourly }) => {
 	const renderHourlyForecast = () => {
@@ -100,6 +101,10 @@ const Today = ({ data, today, hourly }) => {
 								value={getPercent(data.humidity)}
 							/>
 						</div>
+						<SunPhaseComponent
+							sunsetTime={today.sunsetTime}
+							sunriseTime={today.sunriseTime}
+						/>
 					</div>
 				</div>
 			</div>

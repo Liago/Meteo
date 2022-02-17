@@ -8,9 +8,6 @@ import MiniCardInfo from "components/cards/miniCard";
 const DetailsInfo = ({ data }) => {
 	return (
 		<CardContainer>
-			<div>
-				<p className="text-md font-medium">Dettagli</p>
-			</div>
 			<div className="pt-6 pb-2">
 				<div className="text-center">
 					<WeatherIcon className='text-7xl' icon={data.icon} />

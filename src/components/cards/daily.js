@@ -1,15 +1,14 @@
-import { useDispatch, useSelector } from 'react-redux';
 import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/react/outline'
 
 import WeatherIcon from "components/UI/weatherIcon";
 import { CardContainer } from "components/UI/cardContainer";
 import ModalDailyInfo from "components/modals/modalDailyInfo";
 
-import { showInfoHandler } from 'store/actions';
 import { getDataFormatted, getPercent, getTemp } from "../../utils/utils";
+import { useState } from 'react';
 
-const Daily = ({ data, pageRef }) => {
-	const dispatch = useDispatch();
+const Daily = ({ data }) => {
+	const [showModal, setShowModal] = useState(false);
 
 	const renderRainChance = () => {
 		if (data.icon === 'clear-day' || data.precipProbability === 0)
@@ -17,18 +16,14 @@ const Daily = ({ data, pageRef }) => {
 
 		return <div className="font-light">{getPercent(data.precipProbability)}</div>
 	}
+	const renderModalInfo = () => {
+		const options = { showModal, setShowModal, data };
 
-	const openModalHandler = () => {
-		console.log('open');
-		dispatch(showInfoHandler(true));
-	}
-	const closeModalHandler = () => {
-		console.log('close')
-		dispatch(showInfoHandler(false));
+		return <ModalDailyInfo {...options} />
 	}
 
 	return (
-		<div onClick={() => openModalHandler()}>
+		<div onClick={() => setShowModal(true)}>
 			<CardContainer>
 				<div className="grid grid-cols-7 gap-4">
 					<div className="text-center">
@@ -53,12 +48,8 @@ const Daily = ({ data, pageRef }) => {
 						{renderRainChance()}
 					</div>
 				</div>
-				<ModalDailyInfo
-					data={data}
-					pageRef={pageRef}
-					closeModal={closeModalHandler}
-				/>
 			</CardContainer>
+			{renderModalInfo()}
 		</div>
 
 	);

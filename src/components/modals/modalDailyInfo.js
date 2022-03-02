@@ -13,15 +13,11 @@ const ModalDailyInfo = ({ data, showModal, setShowModal }) => {
 			isOpen={showModal}
 			initialBreakpoint={0.5}
 			breakpoints={[0, 0.5, 1]}
+			onDidDismiss={() => setShowModal(false)}
 		>
 			<IonHeader>
 				<IonToolbar>
 					<IonTitle>Dettagli</IonTitle>
-					<IonButtons slot="end">
-						<IonButton onClick={() => setShowModal()}>
-							<IonIcon slot="icon-only" icon={close} />
-						</IonButton>
-					</IonButtons>
 				</IonToolbar>
 			</IonHeader>
 			<IonContent fullscreen>

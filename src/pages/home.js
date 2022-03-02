@@ -17,6 +17,8 @@ import { fetchWeather, getLocation, searchCity } from "../rest/rest";
 import HeaderToolbar from "components/headerAndFooter/headerToolbar";
 import AlertContainer from "components/UI/alertContainer";
 import FooterToolbar from "components/headerAndFooter/footerToolbar";
+import MainModal from "components/UI/mainModal";
+import TodayHeader from "components/todayHeader";
 
 
 
@@ -27,6 +29,8 @@ const Home = () => {
 	const [showModal, setShowModal] = useState(false);
 	const [searchText, setSearchText] = useState('');
 	const [searchResults, setSearchResults] = useState(null);
+	const [showMainModal, setShowMainModal] = useState(true);
+	const [tab, setTab] = useState("today");
 	const pageRef = useRef()
 
 
@@ -117,9 +121,8 @@ const Home = () => {
 		if (!selectedLocation) return;
 		if (!forecast[selectedLocation.place_id]) return;
 
-		return <Today
+		return <TodayHeader
 			data={forecast[selectedLocation.place_id].currently}
-			hourly={forecast[selectedLocation.place_id].hourly.data}
 			today={forecast[selectedLocation.place_id].daily.data[0]}
 		/>;
 	};
@@ -160,6 +163,21 @@ const Home = () => {
 
 		return <FooterToolbar data={data[0]} summary={summary} />
 	}
+	const renderInfoContent = () => {
+		switch (tab) {
+			case "today":
+				return (
+					<Today
+						data={forecast[selectedLocation.place_id].currently}
+						hourly={forecast[selectedLocation.place_id].hourly.data}
+						today={forecast[selectedLocation.place_id].daily.data[0]}
+						summary={forecast[selectedLocation.place_id].daily.summary}
+					/>
+				)
+			default:
+				return null;
+		}
+	}
 
 	return (
 		<IonPage ref={pageRef}>
@@ -175,6 +193,14 @@ const Home = () => {
 				<Container paddingX={4} marginX="auto">
 					<div className="flex flex-col">
 						{renderMainContent()}
+						<MainModal
+							showModal={showMainModal}
+							setShowModal={setShowMainModal}
+							tab={tab}
+							setTab={setTab}
+						>
+							{renderInfoContent()}
+						</MainModal>
 					</div>
 					{renderWeekdays()}
 					<Search

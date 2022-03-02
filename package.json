@@ -44,6 +44,7 @@
     "redux-thunk": "^2.4.1",
     "slick-carousel": "^1.8.1",
     "styled-components": "^5.3.3",
+    "tw-elements": "^1.0.0-alpha11",
     "typescript": "^4.1.3",
     "web-vitals": "^0.2.4",
     "workbox-background-sync": "^5.1.4",
@@ -60,14 +61,14 @@
     "workbox-streams": "^5.1.4"
   },
   "scripts": {
-	"config": "node set-env.js",
+    "config": "node set-env.js",
     "start": "PORT=5000 craco start",
     "build": "craco build",
     "ionic:build": "craco build",
     "test": "craco test --transformIgnorePatterns 'node_modules/(?!(@ionic/react|@ionic/react-router|@ionic/core|@stencil/core|ionicons)/)'",
     "eject": "react-scripts eject",
-	"ios-build": "ionic cap build ios",
-	"android-build": "ionic cap build android"
+    "build-ios": "ionic cap build ios",
+    "build-android": "ionic cap build android"
   },
   "eslintConfig": {
     "extends": [

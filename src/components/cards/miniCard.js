@@ -1,9 +1,9 @@
 import WeatherIcon from "../UI/weatherIcon";
 import { MiniCardContainer } from '../UI/cardContainer';
 
-const MiniCardInfo = ({ icon, label, value, unit, fontSize }) => {
+const MiniCardInfo = ({ icon, label, value, unit, fontSize, additionaClassName }) => {
 	return (
-		<MiniCardContainer >
+		<MiniCardContainer additionalClass={`${additionaClassName}`}>
 			<div className={fontSize}>
 				<WeatherIcon icon={icon} />
 				<span className="font-light"> {label}</span>

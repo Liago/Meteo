@@ -8,9 +8,11 @@ module.exports = {
 		extend: {
 			height: {
 				'90': '90vh',
-			  }
+			}
 		},
 	},
 	variants: {},
-	plugins: [],
+	plugins: [
+		require('tw-elements/dist/plugin')
+	]
 }

@@ -1,4 +1,4 @@
-const Container = ({ children, paddingX, marginX }) => {
-	return <div className={`container mx-${marginX} px-${paddingX}`}>{children}</div>
+const Container = ({ children, paddingX, marginX, className }) => {
+	return <div className={`container mx-${marginX} px-${paddingX} ${className}`}>{children}</div>
 }
 export default Container;

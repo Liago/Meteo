@@ -53,6 +53,8 @@ const Home = () => {
 
 	useEffect(() => {
 		autoUpdates && checkForecastDifference();
+		setShowMainModal(true);
+		
 		if (!selectedLocation) return;
 		if (forecast[selectedLocation?.place_id]) return;
 
@@ -84,7 +86,8 @@ const Home = () => {
 				location: thisLocation.place_id,
 				forecast: response
 			}))
-			!refresh && dispatch(saveLocation(thisLocation))
+			!refresh && dispatch(saveLocation(thisLocation));
+			showMainModal(true);
 		})
 	}
 
@@ -166,7 +169,7 @@ const Home = () => {
 	const renderInfoContent = () => {
 		if (!selectedLocation) return;
 		if (!forecast[selectedLocation.place_id]) return;
-		
+
 		switch (tab) {
 			case "today":
 				return (

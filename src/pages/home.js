@@ -164,6 +164,9 @@ const Home = () => {
 		return <FooterToolbar data={data[0]} summary={summary} />
 	}
 	const renderInfoContent = () => {
+		if (!selectedLocation) return;
+		if (!forecast[selectedLocation.place_id]) return;
+		
 		switch (tab) {
 			case "today":
 				return (

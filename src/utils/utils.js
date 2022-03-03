@@ -2,7 +2,7 @@ import icons from '../config/icons.json'
 
 import 'moment/locale/it'
 import moment from "moment";
-import { round, isNil } from 'lodash'
+import { round, isNil, reduce } from 'lodash'
 
 export const getDataFormatted = (unixDate, dateFormat) => {
 	return moment.unix(unixDate).format(dateFormat)
@@ -40,4 +40,11 @@ export const itsTimeToRefresh = (forecast, selectedLocation) => {
 	const today = moment([todayYear, todayMonth, todayDay]);
 	return (forecastDownload.diff(today, 'days') !== 0) ? true : false
 		
+}
+
+export const getChartData = (forecastData, dataType) => {
+	return reduce(forecastData, function (result, value) {
+		result.dataset = (result.dataset || []).concat([[getDataFormatted(value.time, 'ddd HH:mm'), value[dataType]]]);
+		return result;
+	}, {});
 }

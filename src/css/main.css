@@ -6,6 +6,7 @@
 @import "./weather-icons.css";
 @import "slick-carousel/slick/slick.css";
 @import "slick-carousel/slick/slick-theme.css";
+@import '../components/index.css';
 
 body,
 html {

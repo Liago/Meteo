@@ -1,4 +1,4 @@
-import { IonLabel, IonModal, IonSegment, IonSegmentButton, IonToolbar } from "@ionic/react";
+import { IonContent, IonLabel, IonModal, IonSegment, IonSegmentButton, IonToolbar } from "@ionic/react";
 
 const MainModal = ({ showModal, setShowModal, children, tab, setTab }) => {
 	return (
@@ -7,6 +7,7 @@ const MainModal = ({ showModal, setShowModal, children, tab, setTab }) => {
 			initialBreakpoint={0.65}
 			breakpoints={[0.4, 0.65, 1]}
 			onDidDismiss={() => setShowModal(false)}
+			className="main-modal"
 		>
 			<IonToolbar className="pt-5 pb-2">
 				<IonSegment onIonChange={e => setTab(e.detail.value)} value={tab}>
@@ -21,7 +22,9 @@ const MainModal = ({ showModal, setShowModal, children, tab, setTab }) => {
 					</IonSegmentButton>
 				</IonSegment>
 			</IonToolbar>
-			{children}
+			<IonContent fullscreen>
+				{children}
+			</IonContent>
 		</IonModal>
 	)
 }

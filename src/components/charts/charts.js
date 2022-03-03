@@ -1,25 +1,24 @@
 import { Chart } from "react-google-charts";
 
-const Charts = ({ data }) => {
-
+const Charts = ({ data, options }) => {
 	const labels = [['ora', 'temperatura']]
 	const chartData = [].concat(labels, data)
 
 	return (
 		<Chart
 			width={350}
-			height={300}
+			height={150}
 			chartType="AreaChart"
 			loader={<div>Caricamento</div>}
 			data={chartData}
 			options={{
-				title: 'Dati orari',
+				title: options.title,
 				chartArea: { width: '80%' },
 				hAxis: {
-					title: 'Orario',
+					title: options.labelX,
 				},
 				vAxis: {
-					title: 'Gradi',
+					title: options.labelY,
 				},
 				animation: {
 					startup: true,

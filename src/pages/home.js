@@ -19,6 +19,9 @@ import AlertContainer from "components/UI/alertContainer";
 import FooterToolbar from "components/headerAndFooter/footerToolbar";
 import MainModal from "components/UI/mainModal";
 import TodayHeader from "components/todayHeader";
+import ForecastContainer from "components/tabs/forecast/forecastContainer";
+import TodayContainer from "components/tabs/today/todayContainer";
+import PrecipitationContainer from "components/tabs/precipitation/precipitationContainer";
 
 
 
@@ -54,7 +57,7 @@ const Home = () => {
 	useEffect(() => {
 		autoUpdates && checkForecastDifference();
 		setShowMainModal(true);
-		
+
 		if (!selectedLocation) return;
 		if (forecast[selectedLocation?.place_id]) return;
 
@@ -129,17 +132,6 @@ const Home = () => {
 			today={forecast[selectedLocation.place_id].daily.data[0]}
 		/>;
 	};
-	const renderWeekdays = () => {
-		if (!selectedLocation) return;
-		if (!forecast[selectedLocation.place_id]) return;
-
-		return (
-			forecast[selectedLocation.place_id].daily.data.map((day, i) => {
-				if (i >= 1)
-					return <Daily key={i} data={day} pageRef={pageRef} />;
-			})
-		)
-	};
 	const renderCityName = () => {
 		if (!selectedLocation) return;
 
@@ -173,12 +165,23 @@ const Home = () => {
 		switch (tab) {
 			case "today":
 				return (
-					<Today
+					<TodayContainer
 						data={forecast[selectedLocation.place_id].currently}
 						hourly={forecast[selectedLocation.place_id].hourly.data}
 						today={forecast[selectedLocation.place_id].daily.data[0]}
 						summary={forecast[selectedLocation.place_id].daily.summary}
 					/>
+				)
+			case "forecast":
+				return (
+					<ForecastContainer
+						data={forecast[selectedLocation.place_id].daily.data}
+						pageRef={pageRef}
+					/>
+				)
+			case "precipitation":
+				return (
+					<PrecipitationContainer />
 				)
 			default:
 				return null;
@@ -208,7 +211,6 @@ const Home = () => {
 							{renderInfoContent()}
 						</MainModal>
 					</div>
-					{renderWeekdays()}
 					<Search
 						showModal={showModal}
 						setShowModal={setShowModal}
@@ -219,7 +221,7 @@ const Home = () => {
 					/>
 				</Container>
 			</Layout>
-			{renderFooter()}
+			{/* {renderFooter()} */}
 		</IonPage>
 	);
 };

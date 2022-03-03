@@ -10,7 +10,7 @@ const AlertContainer = ({ alerts, onDismiss }) => {
 		return (
 			alerts.map((alert, i) => {
 				return (
-					<CardContainer key={alert.time} className="px-3">
+					<CardContainer key={i} className="px-3">
 						<div className="p-2">
 							<h3 className="text-amber-500 font-medium">Alert #{i + 1}</h3>
 							<div className="py-4 flex flex-col text-sm font-medium text-gray-500">
@@ -21,9 +21,13 @@ const AlertContainer = ({ alerts, onDismiss }) => {
 							<p className="text-md font-light text-gray-800 pt-3">{alert.description}</p>
 							<div className="py-2 ">
 								<p className="text-md font-medium text-gray-800">Validity</p>
-								{alert.regions.map(region => {
+								{alert.regions.map((region, i) => {
 									return (
-										<p className="text-md font-light text-gray-800">{region}</p>
+										<p
+											key={i}
+											className="text-md font-light text-gray-800">
+											{region}
+										</p>
 									)
 								})}
 							</div>

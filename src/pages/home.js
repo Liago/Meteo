@@ -149,15 +149,7 @@ const Home = () => {
 			</>
 		)
 	}
-	const renderFooter = () => {
-		if (!selectedLocation) return;
-		if (!forecast[selectedLocation.place_id]) return;
 
-
-		const { data, summary } = forecast[selectedLocation.place_id].daily
-
-		return <FooterToolbar data={data[0]} summary={summary} />
-	}
 	const renderInfoContent = () => {
 		if (!selectedLocation) return;
 		if (!forecast[selectedLocation.place_id]) return;
@@ -221,7 +213,6 @@ const Home = () => {
 					/>
 				</Container>
 			</Layout>
-			{/* {renderFooter()} */}
 		</IonPage>
 	);
 };

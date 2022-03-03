@@ -1,0 +1,9 @@
+{
+	"iconset": {
+		"partly-cloudy-day": "day-cloudy",
+		"partly-cloudy-night": "night-alt-cloudy",
+		"clear-day": "day-cloudy",
+		"clear-night": "night-clear",
+		"wind": "strong-wind"
+	}
+}

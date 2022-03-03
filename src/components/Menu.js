@@ -65,11 +65,10 @@ const Menu = () => {
 		return <MenuLocations locations={locations} selectCity={cityHandler} />
 	}
 
-	const renderMenu = () => {
-		return <MenuItems items={appPages} />
+	const cityHandler = (location) => {
+		dispatch(setCurrentLocation(location));
+		menuRef.current.close()
 	}
-
-	const cityHandler = (location) => dispatch(setCurrentLocation(location))
 
 
 	return (
@@ -88,7 +87,7 @@ const Menu = () => {
 						/>
 						<IonLabel>Impostazioni</IonLabel>
 					</IonItem>
-					{renderMenu()}
+					<MenuItems items={appPages} />
 				</IonList>
 				<IonList id="labels-list">
 					<IonListHeader>Città</IonListHeader>

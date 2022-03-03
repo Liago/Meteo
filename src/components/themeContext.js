@@ -9,7 +9,7 @@ const ThemeProvider = ({ children }) => {
 		setToggle(!toggle);
 	};
 	return (
-		<ThemeContext.Provider value={{ toggle, toggleFunction }}>
+		<ThemeContext.Provider value={{ toggle, toggleFunction }} >
 			{children}
 		</ThemeContext.Provider>
 	);

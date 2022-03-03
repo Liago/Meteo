@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { IonButtons, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 
@@ -6,17 +5,13 @@ import { IonButtons, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } f
 import Layout from '../components/layout';
 import Charts from '../components/charts/charts';
 
-import { getDataFormatted } from '../utils/utils';
-import { round, reduce } from 'lodash'
+import { getChartData } from '../utils/utils';
 
 const Graph = ({ name, data }) => {
-	const { forecast } = useSelector(state => state.app);
-	const chartData = reduce(forecast?.hourly?.data, function (result, value) {
-		console.log('getDataFormatted(value.time, "DD MM") :>> ', getDataFormatted(value.time, "DD MM"));
-		result.dataset = (result.dataset || []).concat([[getDataFormatted(value.time, 'ddd HH:mm'), value.temperature]]);
-		return result;
-	}, {});
-
+	const { forecast } = useSelector(state => state);
+	const { selectedLocation } = useSelector(state => state.app);
+	
+	const chartData = getChartData(forecast[selectedLocation?.place_id]?.hourly?.data);
 
 	return (
 		<IonPage>

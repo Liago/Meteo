@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { IonPage } from "@ionic/react";
+import { IonPage, useIonModal } from "@ionic/react";
+import { Geolocation } from '@ionic-native/geolocation';
 
 import Layout from "../components/layout";
 import Today from "../components/cards/today";
@@ -13,9 +14,15 @@ import { addCoordinates, itsTimeToRefresh } from "utils/utils";
 import { saveLocation, saveLocationForecastData, setCurrentLocation } from "../store/actions";
 import { fetchWeather, getLocation, searchCity } from "../rest/rest";
 
-import Slider from "react-slick";
-import HeaderToolbar from "components/header/headerToolbar";
-import { Geolocation } from '@ionic-native/geolocation';
+import HeaderToolbar from "components/headerAndFooter/headerToolbar";
+import AlertContainer from "components/UI/alertContainer";
+import FooterToolbar from "components/headerAndFooter/footerToolbar";
+import MainModal from "components/UI/mainModal";
+import TodayHeader from "components/todayHeader";
+import ForecastContainer from "components/tabs/forecast/forecastContainer";
+import TodayContainer from "components/tabs/today/todayContainer";
+import PrecipitationContainer from "components/tabs/precipitation/precipitationContainer";
+
 
 
 const Home = () => {
@@ -25,14 +32,17 @@ const Home = () => {
 	const [showModal, setShowModal] = useState(false);
 	const [searchText, setSearchText] = useState('');
 	const [searchResults, setSearchResults] = useState(null);
-	const slideOptions = {
-		dots: false,
-		arrows: false,
-		infinite: true,
-		speed: 500,
-		slidesToShow: 1,
-		slidesToScroll: 1
-	};
+	const [showMainModal, setShowMainModal] = useState(true);
+	const [tab, setTab] = useState("today");
+	const pageRef = useRef()
+
+
+	const handleDismiss = () => dismissAlert();
+	const [showAlert, dismissAlert] = useIonModal(AlertContainer, {
+		alerts: forecast[selectedLocation?.place_id]?.alerts || null,
+		onDismiss: handleDismiss
+	});
+
 	useEffect(() => {
 		getCurrentLocation();
 		checkForecastDifference();
@@ -46,11 +56,18 @@ const Home = () => {
 
 	useEffect(() => {
 		autoUpdates && checkForecastDifference();
+		setShowMainModal(true);
+
 		if (!selectedLocation) return;
 		if (forecast[selectedLocation?.place_id]) return;
 
 		fetchForecast(selectedLocation, false);
 	}, [selectedLocation])
+
+
+	const showAlertHandler = (content) => {
+		showAlert()
+	}
 
 	const checkForecastDifference = () => {
 		if (!forecast[selectedLocation?.place_id]) return;
@@ -72,7 +89,8 @@ const Home = () => {
 				location: thisLocation.place_id,
 				forecast: response
 			}))
-			!refresh && dispatch(saveLocation(thisLocation))
+			!refresh && dispatch(saveLocation(thisLocation));
+			showMainModal(true);
 		})
 	}
 
@@ -105,34 +123,14 @@ const Home = () => {
 		dispatch(setCurrentLocation(locationProps))
 	}
 
-	const renderToday = () => {
-		if (!selectedLocation) return;
-		if (!forecast[selectedLocation.place_id]) return;
-
-		return <Today data={forecast[selectedLocation.place_id].daily.data[0]} />;
-	};
 	const renderNow = () => {
 		if (!selectedLocation) return;
 		if (!forecast[selectedLocation.place_id]) return;
 
-		return <Today
+		return <TodayHeader
 			data={forecast[selectedLocation.place_id].currently}
-			summary={{
-				text: forecast[selectedLocation.place_id].daily.summary,
-				icon: forecast[selectedLocation.place_id].daily.icon
-			}}
+			today={forecast[selectedLocation.place_id].daily.data[0]}
 		/>;
-	};
-	const renderWeekdays = () => {
-		if (!selectedLocation) return;
-		if (!forecast[selectedLocation.place_id]) return;
-
-		return (
-			forecast[selectedLocation.place_id].daily.data.map((day, i) => {
-				if (i >= 1)
-					return <Daily key={i} data={day} />;
-			})
-		)
 	};
 	const renderCityName = () => {
 		if (!selectedLocation) return;
@@ -145,33 +143,73 @@ const Home = () => {
 	const renderMainContent = () => {
 		if (!selectedLocation || !forecast[selectedLocation.place_id]) return <Spinner />;
 
-
 		return (
 			<>
-				<Slider
-					className="p-4"
-					{...slideOptions}
-				>
-					{renderToday()}
-					{renderNow()}
-				</Slider>
-				{renderWeekdays()}
+				{renderNow()}
 			</>
 		)
 	}
+	const renderFooter = () => {
+		if (!selectedLocation) return;
+		if (!forecast[selectedLocation.place_id]) return;
+
+
+		const { data, summary } = forecast[selectedLocation.place_id].daily
+
+		return <FooterToolbar data={data[0]} summary={summary} />
+	}
+	const renderInfoContent = () => {
+		if (!selectedLocation) return;
+		if (!forecast[selectedLocation.place_id]) return;
+
+		switch (tab) {
+			case "today":
+				return (
+					<TodayContainer
+						data={forecast[selectedLocation.place_id].currently}
+						hourly={forecast[selectedLocation.place_id].hourly.data}
+						today={forecast[selectedLocation.place_id].daily.data[0]}
+						summary={forecast[selectedLocation.place_id].daily.summary}
+					/>
+				)
+			case "forecast":
+				return (
+					<ForecastContainer
+						data={forecast[selectedLocation.place_id].daily.data}
+						pageRef={pageRef}
+					/>
+				)
+			case "precipitation":
+				return (
+					<PrecipitationContainer />
+				)
+			default:
+				return null;
+		}
+	}
 
 	return (
-		<IonPage>
+		<IonPage ref={pageRef}>
 			<HeaderToolbar
 				renderCityName={renderCityName}
 				refreshForecast={refreshForecast}
 				setShowModal={setShowModal}
 				showModal={showModal}
+				showAlert={showAlertHandler}
+				areThereAlerts={(forecast[selectedLocation?.place_id]?.alerts || null) ? true : false}
 			/>
 			<Layout>
 				<Container paddingX={4} marginX="auto">
-					<div>
+					<div className="flex flex-col">
 						{renderMainContent()}
+						<MainModal
+							showModal={showMainModal}
+							setShowModal={setShowMainModal}
+							tab={tab}
+							setTab={setTab}
+						>
+							{renderInfoContent()}
+						</MainModal>
 					</div>
 					<Search
 						showModal={showModal}
@@ -183,6 +221,7 @@ const Home = () => {
 					/>
 				</Container>
 			</Layout>
+			{/* {renderFooter()} */}
 		</IonPage>
 	);
 };

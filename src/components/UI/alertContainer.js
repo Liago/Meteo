@@ -12,15 +12,15 @@ const AlertContainer = ({ alerts, onDismiss }) => {
 				return (
 					<CardContainer key={i} className="px-3">
 						<div className="p-2">
-							<h3 className="text-amber-500 font-medium">Alert #{i + 1}</h3>
+							<h3 className="text-amber-500 font-medium">Allerta #{i + 1}</h3>
 							<div className="py-4 flex flex-col text-sm font-medium text-gray-500">
-								<p>Emitted: {getDataFormatted(alert.time, 'DD/MM/YYYY HH:mm')}</p>
-								<p>Expires: {getDataFormatted(alert.expires, 'DD/MM/YYYY HH:mm')}</p>
+								<p>Emesso il: {getDataFormatted(alert.time, 'DD/MM/YYYY HH:mm')}</p>
+								<p>Scade il: {getDataFormatted(alert.expires, 'DD/MM/YYYY HH:mm')}</p>
 							</div>
 							<p className="text-xl font-medium text-gray-600 py-1 border-b-2 border-gray-500">{alert.title}</p>
 							<p className="text-md font-light text-gray-800 pt-3">{alert.description}</p>
 							<div className="py-2 ">
-								<p className="text-md font-medium text-gray-800">Validity</p>
+								<p className="text-md font-medium text-gray-800">Zone di validitày</p>
 								{alert.regions.map((region, i) => {
 									return (
 										<p

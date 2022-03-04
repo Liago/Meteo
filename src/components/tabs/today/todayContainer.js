@@ -3,7 +3,7 @@ import ExtendedForecastInfo from "components/forecast/extendedInfo";
 import HourlyForecast from "components/forecast/hourly";
 import TodayShortForecast from "components/forecast/todayShortForecast";
 
-const TodayContainer = ({ today, hourly, summary }) => {
+const TodayContainer = ({ today, hourly, summary, areThereAlerts, showAlert }) => {
 
 	return (
 		<div className="bg-white dark:bg-black w-full pt-3 text-black">
@@ -13,7 +13,11 @@ const TodayContainer = ({ today, hourly, summary }) => {
 						<TodayShortForecast hourly={hourly} />
 					</div>
 					<div className="py-5 px-3 border-b-2 border-slate-800 text-lato">
-						<ExtendedForecastInfo summary={summary} />
+						<ExtendedForecastInfo
+							summary={summary}
+							areThereAlerts={areThereAlerts}
+							showAlert={showAlert}
+						/>
 					</div>
 					<div className="py-3">
 						<h5 className="text-md font-light capitalize">andamento orario</h5>

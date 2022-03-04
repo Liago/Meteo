@@ -166,6 +166,8 @@ const Home = () => {
 						hourly={forecast[selectedLocation.place_id].hourly.data}
 						today={forecast[selectedLocation.place_id].daily.data[0]}
 						summary={forecast[selectedLocation.place_id].daily.summary}
+						areThereAlerts={(forecast[selectedLocation?.place_id]?.alerts || null) ? true : false}
+						showAlert={showAlertHandler}
 					/>
 				)
 			case "forecast":

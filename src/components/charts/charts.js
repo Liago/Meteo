@@ -1,6 +1,6 @@
 import { Chart } from "react-google-charts";
 
-const Charts = ({ data, options }) => {
+const Charts = ({ data, options, type }) => {
 	const labels = [['ora', 'temperatura']]
 	const chartData = [].concat(labels, data)
 
@@ -8,7 +8,7 @@ const Charts = ({ data, options }) => {
 		<Chart
 			width={350}
 			height={150}
-			chartType="AreaChart"
+			chartType={type}
 			loader={<div>Caricamento</div>}
 			data={chartData}
 			options={{

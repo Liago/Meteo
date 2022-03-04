@@ -4,7 +4,7 @@ import { informationCircleOutline } from "ionicons/icons"
 const ExtendedForecastInfo = ({ summary, areThereAlerts, showAlert }) => {
 	const renderAlertsButton = () => {
 		return (
-			<div class="relative">
+			<div className="relative">
 				<div
 					onClick={() => showAlert()}
 					className="items-center px-4 py-2 font-semibold text-sm shadow rounded-md text-gray-700 transition ease-in-out duration-150"

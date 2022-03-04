@@ -12,7 +12,7 @@ const AlertContainer = ({ alerts, onDismiss }) => {
 				return (
 					<CardContainer key={i} className="px-3">
 						<div className="p-2">
-							<div class="py-3 border-b border-gray-300">
+							<div className="py-3 border-b border-gray-300">
 								<h3 className="text-amber-500 font-medium">Allerta #{i + 1}</h3>
 								<p>Emessa il {getDataFormatted(alert.time, 'DD/MM/YYYY HH:mm')}</p>
 							</div>
@@ -31,7 +31,7 @@ const AlertContainer = ({ alerts, onDismiss }) => {
 								})}
 							</div>
 						</div>
-						<div class="py-3 border-t border-gray-300 text-gray-600">
+						<div className="py-3 border-t border-gray-300 text-gray-600">
 							<p>Scade il {getDataFormatted(alert.expires, 'DD/MM/YYYY HH:mm')}</p>
 						</div>
 					</CardContainer>

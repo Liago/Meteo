@@ -30,21 +30,23 @@ const ForecastContainer = ({ data, pageRef }) => {
 			{renderdaysOfWeek()}
 			<div className="container mx-auto px-4">
 				<Charts
+					type='AreaChart'
 					data={chartTemp.dataset}
 					chartTitle='Temperatura Massima'
 					options={{
 						title: 'Temperatura Massima',
-						labelX: 'orario',
+						// labelX: 'orario',
 						labelY: 'gradi'
 					}}
 					/>
 			</div>
 			<div className="container mx-auto px-4">
 				<Charts
+					type='AreaChart'
 					data={chartWind.dataset}
 					options={{
 						title: 'Variazione vento',
-						labelX: 'orario',
+						// labelX: 'orario',
 						labelY: 'velocità m/s'
 					}}
 					/>

@@ -44,7 +44,7 @@ export const itsTimeToRefresh = (forecast, selectedLocation) => {
 
 export const getChartData = (forecastData, dataType) => {
 	return reduce(forecastData, function (result, value) {
-		result.dataset = (result.dataset || []).concat([[getDataFormatted(value.time, 'ddd HH:mm'), value[dataType]]]);
+		result.dataset = (result.dataset || []).concat([[getDataFormatted(value.time, 'ddd HH'), value[dataType]]]);
 		return result;
 	}, {});
 }

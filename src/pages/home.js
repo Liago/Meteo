@@ -193,6 +193,7 @@ const Home = () => {
 				showModal={showModal}
 				showAlert={showAlertHandler}
 				areThereAlerts={(forecast[selectedLocation?.place_id]?.alerts || null) ? true : false}
+				setShowMainModal={setShowMainModal}
 			/>
 			<Layout>
 				<Container paddingX={4} marginX="auto">

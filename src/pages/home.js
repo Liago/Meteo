@@ -4,8 +4,6 @@ import { IonPage, useIonModal } from "@ionic/react";
 import { Geolocation } from '@ionic-native/geolocation';
 
 import Layout from "../components/layout";
-import Today from "../components/cards/today";
-import Daily from "../components/cards/daily";
 import Search from "../components/search/search";
 import Container from '../components/UI/container';
 import Spinner from "components/UI/spinner";
@@ -16,7 +14,6 @@ import { fetchWeather, getLocation, searchCity } from "../rest/rest";
 
 import HeaderToolbar from "components/headerAndFooter/headerToolbar";
 import AlertContainer from "components/UI/alertContainer";
-import FooterToolbar from "components/headerAndFooter/footerToolbar";
 import MainModal from "components/UI/mainModal";
 import TodayHeader from "components/todayHeader";
 import ForecastContainer from "components/tabs/forecast/forecastContainer";
@@ -32,7 +29,7 @@ const Home = () => {
 	const [showModal, setShowModal] = useState(false);
 	const [searchText, setSearchText] = useState('');
 	const [searchResults, setSearchResults] = useState(null);
-	const [showMainModal, setShowMainModal] = useState(true);
+	const [showMainModal, setShowMainModal] = useState(false);
 	const [tab, setTab] = useState("today");
 	const pageRef = useRef()
 
@@ -56,10 +53,12 @@ const Home = () => {
 
 	useEffect(() => {
 		autoUpdates && checkForecastDifference();
-		setShowMainModal(true);
 
 		if (!selectedLocation) return;
-		if (forecast[selectedLocation?.place_id]) return;
+		if (forecast[selectedLocation?.place_id]) {
+			setShowMainModal(true);
+			return;
+		}
 
 		fetchForecast(selectedLocation, false);
 	}, [selectedLocation])
@@ -90,7 +89,9 @@ const Home = () => {
 				forecast: response
 			}))
 			!refresh && dispatch(saveLocation(thisLocation));
-			showMainModal(true);
+			setTimeout(() => {
+				setShowMainModal(true);
+			}, 500);
 		})
 	}
 
@@ -149,15 +150,7 @@ const Home = () => {
 			</>
 		)
 	}
-	const renderFooter = () => {
-		if (!selectedLocation) return;
-		if (!forecast[selectedLocation.place_id]) return;
 
-
-		const { data, summary } = forecast[selectedLocation.place_id].daily
-
-		return <FooterToolbar data={data[0]} summary={summary} />
-	}
 	const renderInfoContent = () => {
 		if (!selectedLocation) return;
 		if (!forecast[selectedLocation.place_id]) return;
@@ -221,7 +214,6 @@ const Home = () => {
 					/>
 				</Container>
 			</Layout>
-			{/* {renderFooter()} */}
 		</IonPage>
 	);
 };

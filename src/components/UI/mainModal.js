@@ -1,6 +1,16 @@
 import { IonContent, IonLabel, IonModal, IonSegment, IonSegmentButton, IonToolbar } from "@ionic/react";
 
+import Spinner from 'components/UI/spinner';
+
 const MainModal = ({ showModal, setShowModal, children, tab, setTab }) => {
+
+	const renderInfoContent = () => {
+		if (!children) return <Spinner />;
+		
+		return (children)
+	}
+
+
 	return (
 		<IonModal
 			isOpen={showModal}
@@ -23,7 +33,7 @@ const MainModal = ({ showModal, setShowModal, children, tab, setTab }) => {
 				</IonSegment>
 			</IonToolbar>
 			<IonContent fullscreen>
-				{children}
+				{renderInfoContent()}
 			</IonContent>
 		</IonModal>
 	)

@@ -46,7 +46,10 @@ const Home = () => {
 	}, []);
 
 	useEffect(() => {
-		if (searchText === '') return;
+		if (searchText === '') {
+			setSearchResults(null);
+			return;
+		}
 
 		searchCity(searchText).then(searchResult => setSearchResults(searchResult))
 	}, [searchText])

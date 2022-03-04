@@ -1,7 +1,7 @@
 import { IonButton, IonButtons, IonHeader, IonIcon, IonMenuButton, IonTitle, IonToolbar } from "@ionic/react";
-import { reload, search, warningOutline } from "ionicons/icons";
+import { addCircleOutline, reload, warningOutline } from "ionicons/icons";
 
-const HeaderToolbar = ({ renderCityName, setShowModal, showModal, refreshForecast, showAlert, areThereAlerts }) => {
+const HeaderToolbar = ({ renderCityName, setShowModal, showModal, refreshForecast, showAlert, areThereAlerts, setShowMainModal }) => {
 	const renderAlertsButton = () => {
 		if (!areThereAlerts) return;
 
@@ -21,7 +21,12 @@ const HeaderToolbar = ({ renderCityName, setShowModal, showModal, refreshForecas
 				<IonButtons slot="start">
 					<IonMenuButton color="dark" />
 				</IonButtons>
-				<IonTitle className="text-left">{renderCityName()}</IonTitle>
+				<IonTitle
+					className="text-left"
+					onClick={() => setShowMainModal(true)}
+				>
+					{renderCityName()}
+				</IonTitle>
 				<IonButtons slot="primary">
 					{renderAlertsButton()}
 					<IonButton
@@ -34,7 +39,7 @@ const HeaderToolbar = ({ renderCityName, setShowModal, showModal, refreshForecas
 						color="dark"
 						onClick={() => setShowModal(!showModal)}
 					>
-						<IonIcon slot="icon-only" icon={search} />
+						<IonIcon slot="icon-only" icon={addCircleOutline} />
 					</IonButton>
 				</IonButtons>
 			</IonToolbar>

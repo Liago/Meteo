@@ -13,7 +13,10 @@ const Search = ({ showModal, setShowModal, searchText, setSearchText, searchResu
 						key={city.place_id}
 						detail
 						button
-						onClick={() => setCurrentLocation(city)}
+						onClick={() => {
+							setCurrentLocation(city);
+							setSearchText('');
+						}}
 					>
 						<IonLabel>{city.display_name}</IonLabel>
 					</IonItem>

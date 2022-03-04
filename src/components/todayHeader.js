@@ -5,6 +5,8 @@ import WeatherIcon from "./UI/weatherIcon";
 const TodayHeader = ({ data, today }) => {
 
 	const renderCardHeader = () => {
+		if (!data) return;
+
 		return (
 			<div>
 				<h3 className="text-right text-sm font-light text-gray-900 pl-3">{getDataFormatted(data.time, 'dddd DD MMMM YYYY')}</h3>
@@ -15,6 +17,8 @@ const TodayHeader = ({ data, today }) => {
 		)
 	}
 	const renderTemperature = () => {
+		if (!data) return;
+
 		if (data.temperatureHigh)
 			return (
 				<div className="flex justify-between">
@@ -30,7 +34,7 @@ const TodayHeader = ({ data, today }) => {
 		)
 	}
 	const renderSunriseTime = () => {
-		if (!today.sunriseTime) return;
+		if (!today?.sunriseTime) return;
 
 		return <SunriseContainer data={today} />
 	}

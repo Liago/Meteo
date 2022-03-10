@@ -11,12 +11,12 @@ const TodayShortForecast = ({ hourly }) => {
 				const { time, temperature, icon } = item;
 				let myTime = getDataFormatted(time, 'HH:mm');
 				const options = { myTime, temperature, icon };
-				let today = moment().day()
+				let temp = new Date();
+				let today = moment(temp).format('DD');				
 				let day = getDataFormatted(time, 'D');
 
-				if (today > day)
-					return null;
-
+				if (day > today) return null;
+				
 				if (myTime === "7:00" || myTime === "12:00" || myTime === "16:00" || myTime === "21:00" || myTime === "23:00")
 					return <ShortForecastItem key={item.time} {...options} />
 			})

@@ -1,7 +1,7 @@
 import { Chart } from "react-google-charts";
 
 const Charts = ({ data, options, type }) => {
-	const labels = [['ora', 'temperatura']]
+	const labels = [['ora', options.label]]
 	const chartData = [].concat(labels, data)
 
 	return (

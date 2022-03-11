@@ -27,6 +27,10 @@ export const getPercent = (value) => {
 	return <span>{round(value * 100)}%</span>
 }
 
+export const getFlatPercent = (value) => {
+	return round(value * 100)
+}
+
 export const itsTimeToRefresh = (forecast, selectedLocation) => {
 	const { currently } = forecast[selectedLocation?.place_id]
 	const forecastDay = getDataFormatted(currently.time, 'DD')
@@ -42,9 +46,22 @@ export const itsTimeToRefresh = (forecast, selectedLocation) => {
 		
 }
 
+const getCorrectData = (dataType) => {
+	const table = {
+	//	{'precipProbability', }
+	}
+}
+
 export const getChartData = (forecastData, dataType) => {
 	return reduce(forecastData, function (result, value) {
-		result.dataset = (result.dataset || []).concat([[getDataFormatted(value.time, 'ddd HH'), value[dataType]]]);
+
+		console.log('dataType', dataType)
+
+
+
+		let customValue = getFlatPercent(value[dataType])
+		// result.dataset = (result.dataset || []).concat([[getDataFormatted(value.time, 'ddd HH'), value[dataType]]]);
+		result.dataset = (result.dataset || []).concat([[getDataFormatted(value.time, 'ddd HH'), customValue]]);
 		return result;
 	}, {});
 }

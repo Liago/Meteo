@@ -3,7 +3,7 @@ export const CardContainer = ({ children }) => {
 }
 
 export const FlatContainer = ({ children, css }) => {
-	return <div className={`bg-white w-full mx-auto my-3 p-3 ${css}`}>{children}</div>
+	return <div className={`bg-white rounded-md w-full mx-auto my-3 p-3 ${css}`}>{children}</div>
 }
 
 export const MiniCardContainer = ({ children, additionalClass }) => {

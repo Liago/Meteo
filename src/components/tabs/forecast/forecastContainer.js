@@ -35,7 +35,7 @@ const ForecastContainer = ({ data, pageRef }) => {
 					chartTitle='Temperatura Massima'
 					options={{
 						title: 'Temperatura Massima',
-						// labelX: 'orario',
+						label: '°C',
 						labelY: 'gradi'
 					}}
 					/>
@@ -46,7 +46,7 @@ const ForecastContainer = ({ data, pageRef }) => {
 					data={chartWind.dataset}
 					options={{
 						title: 'Variazione vento',
-						// labelX: 'orario',
+						label: 'm/s',
 						labelY: 'velocità m/s'
 					}}
 					/>

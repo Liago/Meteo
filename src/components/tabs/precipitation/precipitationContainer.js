@@ -14,10 +14,11 @@ const PrecipitationContainer = () => {
 				<Charts
 					type='ColumnChart'
 					data={chartPrecipitations.dataset}
-					chartTitle='Temperatura Massima'
+					chartTitle='Probabilità di pioggia'
 					options={{
 						title: 'Precipitazioni',
 						// labelX: 'orario',
+						label: 'Probabilità',
 						labelY: '%'
 					}}
 				/>

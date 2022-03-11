@@ -22,6 +22,9 @@ export const addCoordinates = (location) => {
 export const getTemp = (temp) => {
 	return <span>{round(temp)}°</span>
 }
+export const getFlatTemp = (temp) => {
+	return round(temp)
+}
 
 export const getPercent = (value) => {
 	return <span>{round(value * 100)}%</span>
@@ -46,21 +49,22 @@ export const itsTimeToRefresh = (forecast, selectedLocation) => {
 		
 }
 
-const getCorrectData = (dataType) => {
-	const table = {
-	//	{'precipProbability', }
-	}
-}
-
 export const getChartData = (forecastData, dataType) => {
 	return reduce(forecastData, function (result, value) {
+		let customValue;
+		
+		switch (dataType) {
+			case 'temperature':
+				customValue = getFlatTemp(value[dataType])
+				break;
+			case 'precipProbability':
+				customValue = getFlatPercent(value[dataType])
+				break;
+			default:
+				customValue = value[dataType]
+				break;
+		}
 
-		console.log('dataType', dataType)
-
-
-
-		let customValue = getFlatPercent(value[dataType])
-		// result.dataset = (result.dataset || []).concat([[getDataFormatted(value.time, 'ddd HH'), value[dataType]]]);
 		result.dataset = (result.dataset || []).concat([[getDataFormatted(value.time, 'ddd HH'), customValue]]);
 		return result;
 	}, {});
